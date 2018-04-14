@@ -3,9 +3,15 @@ class BeautyProduct::Ingredient
 
   @@all = []
 
-  def initialize
+  def initialize(ingredient)
+    @name = ingredient
+    @@all << self
     @products = []
   end # initialize
+
+  def self.all
+    @@all
+  end # all
 
   def products
     @products

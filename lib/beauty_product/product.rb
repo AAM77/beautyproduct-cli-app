@@ -14,30 +14,32 @@ class BeautyProduct::Product
   end # all
 
   def self.hairgel
-    hair_gel = self.new
-    hair_gel.name = "Hair gel"
-    hair_gel.price = "$5.00"
-    hair_gel.ingredients = "glue, fragrance"
+
+
   end # hairgel
 
   def self.products
     product_1 = self.new
-    product_1.name = "Perfect Hair Day Conditioner Mini"
+    product_1.name = "Lipstick"
     product_1.price = "$11.00"
-    product_1.ingredients = "Magnesium Nitrate, Magnesium Chloride."
+    product_1.ingredients = "Magnesium Nitrate, Magnesium Chloride, fragrance"
 
     product_2 = self.new
-    product_2.name = "Restore Conditioner Mini"
+    product_2.name = "Eye liner"
     product_2.price = "$13.00"
-    product_2.ingredients = "Behenyl Alcohol, Laureth-16"
+    product_2.ingredients = "Behenyl Alcohol, Laureth-16, glue"
 
-    [product_1, product_2]
+    hair_gel = self.new
+    hair_gel.name = "Hair gel"
+    hair_gel.price = "$5.00"
+    hair_gel.ingredients = "glue, fragrance"
   end # product
 
-  def ingredient
-    products.each do |product|
-      product.ingredients.each do |ingredient|
-        ingredient.products << self
+  def self.ingredient
+    self.all.each do |product|
+      product.ingredients.split(", ").each do |ingredient|
+        new_ingredient = BeautyProduct::Ingredient.new(ingredient)
+        new_ingredient.products << product
       end # each ingredient
     end # each product
   end # ingredient

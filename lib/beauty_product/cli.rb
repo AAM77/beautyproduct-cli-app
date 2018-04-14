@@ -1,6 +1,8 @@
 class BeautyProduct::CLI
 
   def call
+    BeautyProduct::Product.products
+    BeautyProduct::Product.ingredient
     main_menu
   end # call
 
@@ -18,6 +20,8 @@ class BeautyProduct::CLI
     case user_input
     when "1"
       match_product
+    when "2"
+      match_yes_ingredient
     when "exit"
       puts "Exiting program. Goodbye!"
       return
@@ -46,19 +50,19 @@ class BeautyProduct::CLI
     puts "Enter product name to see its ingredients or type exit:"
     user_input = gets.downcase.strip
 
-    BeautyProduct::Product.all.each do |product|
-      if product.name.downcase == user_input
-        puts ""
-        puts "================="
-        puts "= Product Found ="
-        puts "================="
-        puts "#{product.name} - #{product.price}"
-        puts "Ingredients include: #{product.ingredients}"
-      else
-        puts "Product not found. Type 'main menu' or 'exit'"
-        call
-      end # if user_input in products
-    end # do |product|
+    product = BeautyProduct::Product.all.detect { |element| user_input == element.name.downcase }
+
+    if product != nil
+      puts ""
+      puts "================="
+      puts "= Product Found ="
+      puts "================="
+      puts "#{product.name} - #{product.price}"
+      puts "Ingredients include: #{product.ingredients}"
+    else
+      puts "Product not found. Type 'main menu' or 'exit'"
+      call
+    end # if not nil
   end # match_product
 
   def match_yes_ingredient
@@ -66,19 +70,22 @@ class BeautyProduct::CLI
     puts "Enter ingredient name for a list of products or type exit:"
     user_input = gets.downcase.strip
 
-    BeautyProduct::Ingredient.products.each do |product|
-      if product.name.downcase == user_input
-        puts ""
-        puts "=================="
-        puts "= Products Found ="
-        puts "=================="
+    ingredient = BeautyProduct::Ingredient.all.detect { |element| element.name.downcase == user_input }
+
+    if ingredient != nil
+      puts ""
+      puts "=================="
+      puts "= Products Found ="
+      puts "=================="
+      ingredient.products.each do |product|
         puts "#{product.name} - #{product.price}"
         puts "Ingredients include: #{product.ingredients}"
-      else
-        puts "Product not found. Type 'main menu' or 'exit'"
-        call
-      end # if user_input in products
-    end # do |product|
+      end # do |product|
+
+    else
+      puts "Ingredient not found. Type 'main menu' or 'exit'"
+      call
+    end # if user_input in products
   end # match_yes_ingredient
 
 
