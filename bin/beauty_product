@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require "./lib/beauty_product"
+
+BeautyProduct::CLI.new.call

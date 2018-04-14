@@ -1,5 +1,2 @@
-require "beauty_product/version"
-
-module BeautyProduct
-  # Your code goes here...
-end
+require_relative "beauty_product/version"
+require_relative "beauty_product/cli"
