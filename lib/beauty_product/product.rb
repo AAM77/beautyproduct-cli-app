@@ -13,6 +13,13 @@ class BeautyProduct::Product
     @@all
   end # all
 
+  def self.hairgel
+    hair_gel = self.new
+    hair_gel.name = "Hair gel"
+    hair_gel.price = "$5.00"
+    hair_gel.ingredients = "glue, fragrance"
+  end # hairgel
+
   def self.products
     product_1 = self.new
     product_1.name = "Perfect Hair Day Conditioner Mini"

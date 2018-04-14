@@ -5,42 +5,55 @@ class BeautyProduct::CLI
   end # call
 
   def main_menu
-    #downcase_product_names = BeautyProduct::Product.all.collect {|product| product.name.downcase}
-
-    ## menu_options # <=# reads out the menu options
-
     user_input = nil
 
-      puts "Please select an option from the menu:"
+    puts "Please select an option from the menu:"
 
-      puts "1. Search Product by Name"
-      puts "2. Search by Ingredient (products that have it)"
-      puts "3. Search by Ingredient (products that do not have it)"
-      user_input = gets.downcase.strip
+    puts "1. Search Product by Name"
+    puts "2. Search by Ingredient (products that have it)"
+    puts "3. Search by Ingredient (products that do not have it)"
+    user_input = gets.downcase.strip
 
-      until user_input == 'exit'
-        if user_input == "1"
-          match_product
-        elsif user_input == 'exit'
-          puts "Goodbye"
-          return
-        else
-          puts "INVALID ENTRY!"
-          call
-        end # if
+
+    case user_input
+    when "1"
+      match_product
+    when "exit"
+      puts "Exiting program. Goodbye!"
+      return
+    else
+      puts "INVALID ENTRY!"
+      call
+    end # case user_input
+=begin
+      if user_input == "1"
+        match_product
+      elsif user_input == 'exit'
+        puts "Goodbye"
+        return
+      else
+        puts "INVALID ENTRY!"
+        call
+      end # if
     end # until 'exit'
+=end
+
   end # main_menu
 
 
   def match_product
     user_input = nil
-    puts "Enter product name:"
+    puts "Enter product name to see its ingredients or type exit:"
     user_input = gets.downcase.strip
 
     BeautyProduct::Product.all.each do |product|
       if product.name.downcase == user_input
-        puts "#{product.name}"
-        product_options(product)
+        puts ""
+        puts "================="
+        puts "= Product Found ="
+        puts "================="
+        puts "#{product.name} - #{product.price}"
+        puts "Ingredients include: #{product.ingredients}"
       else
         puts "Product not found. Type 'main menu' or 'exit'"
         call
@@ -48,20 +61,6 @@ class BeautyProduct::CLI
     end # do |product|
 
   end # match_product
-
-  def product_options(product)
-    puts "Do you want to see its ingredients? (y/n)"
-    user_input = gets.downcase.strip
-
-    if user_input == "yes" || user_input == 'y'
-      product.ingredients
-    elsif user_input == "no" || user_input == 'n'
-      call
-    else
-      puts "INVALID ENTRY."
-      puts "Type yes, no, or exit."
-    end # if yes/no
-  end # product_options
 
 
 end # class
@@ -75,7 +74,20 @@ end # class
 
 =begin
 
+def product_options(product)
+  user_input = nil
+  puts "Do you want to see its ingredients? (y/n)"
+  user_input = gets.downcase.strip
 
+  if user_input == "yes" || user_input == 'y'
+    puts "#{product.ingredients}"
+  elsif user_input == "no" || user_input == 'n'
+    call
+  else
+    puts "INVALID ENTRY."
+    puts "Type yes, no, or exit."
+  end # if yes/no
+end # product_options
 
 
         if BeautyProduct::CLI.products.include?(product_choice)
