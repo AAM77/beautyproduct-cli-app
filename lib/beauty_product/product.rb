@@ -37,7 +37,7 @@ class BeautyProduct::Product
   def ingredient
     products.each do |product|
       product.ingredients.each do |ingredient|
-        ingredient.products << product.name
+        ingredient.products << self
       end # each ingredient
     end # each product
   end # ingredient
