@@ -70,17 +70,20 @@ class BeautyProduct::CLI
     puts "Enter ingredient name for a list of products or type exit:"
     user_input = gets.downcase.strip
 
-    ingredient = BeautyProduct::Ingredient.all.detect { |element| element.name.downcase == user_input }
+    ingredients = BeautyProduct::Ingredient.all.select { |element| element.name.downcase == user_input }
 
-    if ingredient != nil
+    if ingredients != nil
       puts ""
       puts "=================="
       puts "= Products Found ="
       puts "=================="
-      ingredient.products.each do |product|
-        puts "#{product.name} - #{product.price}"
-        puts "Ingredients include: #{product.ingredients}"
-      end # do |product|
+      ingredients.each.with_index(1) do |ingredient, i|
+        ingredient.products.each do |product|
+          puts ""
+          puts "#{i}. #{product.name} - #{product.price}"
+          puts "Ingredients include: #{product.ingredients}"
+        end # do |product|
+      end #do |ingredient|
 
     else
       puts "Ingredient not found. Type 'main menu' or 'exit'"
