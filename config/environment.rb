@@ -1,0 +1,7 @@
+require "nokogiri"
+require "open-uri"
+require "./lib/beauty_product/version"
+require "./lib/beauty_product/scraper"
+require "./lib/beauty_product/product"
+require "./lib/beauty_product/ingredient"
+require "./lib/beauty_product/cli"
