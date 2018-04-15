@@ -6,42 +6,34 @@ class BeautyProduct::CLI
     main_menu
   end # call
 
-  def main_menu
-    user_input = nil
-
-    puts "Please select an option from the menu:"
+  def menu_options
+    puts "\nPlease select an option from the menu:"
 
     puts "1. Search Product by Name"
     puts "2. Search by Ingredient (products that have it)"
-    puts "3. Search by Ingredient (products that do not have it)"
-    user_input = gets.downcase.strip
+    #puts "3. Search by Ingredient (products that do not have it)"
+  end # menu_options
 
+  def main_menu
+    user_input = nil
+
+    menu_options
+    user_input = gets.downcase.strip
 
     case user_input
     when "1"
       match_product
+      return_to_main_menu?
     when "2"
       match_yes_ingredient
+      return_to_main_menu?
     when "exit"
       puts "Exiting program. Goodbye!"
       return
     else
       puts "INVALID ENTRY!"
-      call
+      main_menu
     end # case user_input
-=begin
-      if user_input == "1"
-        match_product
-      elsif user_input == 'exit'
-        puts "Goodbye"
-        return
-      else
-        puts "INVALID ENTRY!"
-        call
-      end # if
-    end # until 'exit'
-=end
-
   end # main_menu
 
 
@@ -61,7 +53,7 @@ class BeautyProduct::CLI
       puts "Ingredients include: #{product.ingredients}"
     else
       puts "Product not found. Type 'main menu' or 'exit'"
-      call
+      main_menu
     end # if not nil
   end # match_product
 
@@ -77,87 +69,35 @@ class BeautyProduct::CLI
       puts "=================="
       puts "= Products Found ="
       puts "=================="
-      ingredients.each.with_index(1) do |ingredient, i|
+      ingredients.each.with_index(1) do |ingredient, index|
         ingredient.products.each do |product|
           puts ""
-          puts "#{i}. #{product.name} - #{product.price}"
+          puts "#{index}. #{product.name} - #{product.price}"
           puts "Ingredients include: #{product.ingredients}"
         end # do |product|
       end #do |ingredient|
 
     else
       puts "Ingredient not found. Type 'main menu' or 'exit'"
-      call
     end # if user_input in products
   end # match_yes_ingredient
 
+  def return_to_main_menu?
+    puts "\nDo you wish to return to the main menu? (yes/no)"
+    puts "Typing 'n', 'no', or 'exit' will quit the program."
+    user_input = gets.downcase.strip
+
+    case user_input
+    when "y", "yes"
+      main_menu
+    when "n", "no"
+      return
+    when "exit"
+      return
+    else
+      "Invalid entry."
+      return_to_main_menu?
+    end # case user_input
+  end # return_to_main_menu?
 
 end # class
-
-
-
-
-
-
-
-
-=begin
-
-def product_options(product)
-  user_input = nil
-  puts "Do you want to see its ingredients? (y/n)"
-  user_input = gets.downcase.strip
-
-  if user_input == "yes" || user_input == 'y'
-    puts "#{product.ingredients}"
-  elsif user_input == "no" || user_input == 'n'
-    call
-  else
-    puts "INVALID ENTRY."
-    puts "Type yes, no, or exit."
-  end # if yes/no
-end # product_options
-
-
-        if BeautyProduct::CLI.products.include?(product_choice)
-
-        puts "Do you want to see this product's ingredients? (y/n)"
-        yes_no = gets.downcase.strip
-        case yes_no
-        when 'y', 'yes'
-          BeautyProduct::Product.products[1].ingredients
-        else
-          "Exiting Program. Good bye."
-        end # case yes_no
-
-        ## give options for ingredients
-      elsif user_input == "2"
-        puts "253 products include this ingredient."
-        puts "Please enter product name:"
-
-      elsif user_input == "3"
-        ## list number of products that DO NOT include this ingredient
-        ## offer the option of searching for the product by name
-      else
-        puts "Invalid Entry. Choose option 1, 2 , 3, or type 'exit'"
-      end # user_input == //
-    end # until - 'exit'
-
-  end # menu
-
-
-
-  def menu_options
-    puts "Please select an option from the menu:"
-
-    puts "1. Search by Product Name"
-    puts "2. Search by Ingredient (products that have it)"
-    puts "3. Search by Ingredient (products that do not have it)"
-  end # main_menu
-
-
-
-
-end # class BeautyProduct
-
-=end
