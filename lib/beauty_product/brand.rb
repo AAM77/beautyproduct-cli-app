@@ -1,6 +1,6 @@
 class BeautyProduct::Brand
 
-  attr_accessor :name, :price, :product, :products
+  attr_accessor :name, :price, :product, :products, :url
 
   @@all = []
 
@@ -23,8 +23,6 @@ class BeautyProduct::Brand
   end # product
 
   def self.brand
-
-
   end # brand
 
   def self.product
@@ -35,9 +33,5 @@ class BeautyProduct::Brand
        end # each product
      end # each brand
    end # product
-
-end # class Product
-
-
 
 end # class Brand

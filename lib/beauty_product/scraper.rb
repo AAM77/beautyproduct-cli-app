@@ -1,26 +1,26 @@
 class BeautyProduct::Scraper
 
-  sephora = Nokogiri::HTML(open("https://www.sephora.com/brand/list.jsp"))
+  attr_accessor :name
 
+  def self.scrape_brand_page
 
+    sephora_url = "https://www.sephora.com"
+    doc = Nokogiri::HTML(open("#{sephora_url}/brand/list.jsp"))
 
-  def self.products
-  end # products
-
-  def self.scrape_brands
-    brands = []
-
-    brand = brand.new
-    brand.name = "Acqua Di Parma"
-    brand.url = "https://www.sephora.com/acqua-di-parma?products=all"
+    brands = doc.css("a.u-hoverRed.u-db.u-p1")
+    brands.each do |brand|
+      new_brand = BeautyProduct::Brand.new(brand.text)
+      new_brand.url = "#{sephora_url}#{brand.attribute("href").value}?products=all&pageSize=-1"
+    end # do |brand|
   end # scrape_brands
 
-  def self.scrape_brand_page(brand_page)
+  
 
-  end # scrape_brands
 
-  def self.scrape_brand_products(brand_url)
 
-  end # scrape brand_products
+
+
+
+
 
 end # class Scraper
