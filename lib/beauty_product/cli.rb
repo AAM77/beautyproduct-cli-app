@@ -100,4 +100,4 @@ class BeautyProduct::CLI
     end # case user_input
   end # return_to_main_menu?
 
-end # class
+end # class CLI

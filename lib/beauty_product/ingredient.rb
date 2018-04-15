@@ -24,4 +24,4 @@ class BeautyProduct::Ingredient
   end # products
 
 
-end # class BeautyProduct::Ingredient
+end # class Ingredient

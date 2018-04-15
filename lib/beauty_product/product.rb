@@ -24,21 +24,7 @@ class BeautyProduct::Product
   end # ingredient
 
   def self.products
-    product_1 = self.new("Lipstick")
-    #product_1.name = "Lipstick"
-    product_1.price = "$11.00"
-    product_1.ingredient_list("Magnesium Nitrate, Magnesium Chloride, fragrance")
-    #product_1.ingredients.each {|ingredient| add_ingredient(ingredient)}
 
-    product_2 = self.new("Eye liner")
-    #product_2.name = "Eye liner"
-    product_2.price = "$13.00"
-    product_2.ingredient_list("Behenyl Alcohol, Laureth-16, glue")
-
-    hair_gel = self.new("Hair gel")
-    #hair_gel.name = "Hair gel"
-    hair_gel.price = "$5.00"
-    hair_gel.ingredient_list("glue, fragrance")
 
   end # product
 
@@ -51,7 +37,4 @@ class BeautyProduct::Product
      end # each product
    end # ingredient
 
-
-
-
-end # class BeautyProduct::Product
+end # class Product
