@@ -2,10 +2,53 @@ class BeautyProduct::Scraper
 
   attr_accessor :name
 
+  def self.scrape_sale_page
+    cult_beauty_url = "https://www.cultbeauty.co.uk"
+    sale_page = Nokogiri::HTML(open("#{cult_beauty_url}/sale.html"))
+
+    products = sale_page.css("div.productGrid a")
+    products.each do |product|
+      product_name = product.css("h3.productGridTitle").text
+      product_page_url = "#{cult_beauty_url}#{product.attribute("href").value}"
+      new_product = BeautyProduct::Product.new(product_name)
+      new_product.url = product_page_url[/[^#]+/]
+    end # |product|
+  end # scrape_sale_page
+
+
+  def self.scrape_sale_product
+    BeautyProduct::Product.all.each do |product|
+      product_page = Nokogiri::HTML(open(product.url))
+      product_info = product_page.css(".productInfo.js-product-info ul li")
+
+      #product_info = product_page.css(".productInfo.js-product-info ul li")
+      product.price = (product_page.css("span.productSpecialPrice.js-product-special-price").text.to_f * 1.43).round(2).to_s
+
+      product_info.each do |info|
+        if info.css("div.itemHeader span").text == "Description"
+          product.description = info.css("div.itemContent").collect {|p| p.text}.join(" ")
+        elsif info.css("div.itemHeader span").text == "How to use"
+          product.directions = info.css("div.itemContent").collect {|p| p.text}.join(" ")
+        elsif info.css("div.itemHeader span").text == "Full ingredients list"
+          product.ingredients =  info.css("div.itemContent").collect {|p| p.text}.join(" ")
+        end # |if|
+      end # |info|
+    end # |product|
+  end # self.scrape_product_page
+
+
+
+
+
+
+
+
   def self.scrape_brand_page
 
     sephora_url = "https://www.sephora.com"
     cult_beauty_url = "https://www.cultbeauty.co.uk"
+    cult_beauty_sale = "https://www.cultbeauty.co.uk/sale.html"
+
     doc = Nokogiri::HTML(open("#{cult_beauty_url}/brands"))
 
     brands = doc.css("ul.brandsList div.letterGroup a")
@@ -39,7 +82,14 @@ class BeautyProduct::Scraper
       product_info = product_page.css(".productInfo.js-product-info ul li")
 
       #product_info = product_page.css(".productInfo.js-product-info ul li")
-      product.price = product_page.css("span.productPrice.js-product-price").text.to_f ## ATTENTION:  .to_f  converting to float here!! ... Might cause problems later.
+      regular_price = product_page.css("span.productPrice.js-product-price").text
+      sale_price = product_page.css("span.productSpecialPrice.js-product-special-price").text
+      
+      if sale_price.nil?
+        product.price = (regular_price.to_f * 1.43).round(2).to_s
+      else
+        product.price = (sale_price.to_f * 1.43).round(2).to_s
+      end # if price
 
       product_info.each do |info|
         if info.css("div.itemHeader span").text == "Description"
