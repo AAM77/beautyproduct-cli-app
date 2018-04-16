@@ -1,7 +1,7 @@
 
 class BeautyProduct::Product
 
-  attr_accessor :name, :price, :ingredient, :ingredients
+  attr_accessor :name, :price, :ingredient, :ingredients, :directions, :description
 
   @@all = []
 
