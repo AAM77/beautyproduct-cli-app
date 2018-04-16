@@ -1,5 +1,7 @@
 require "nokogiri"
 require "open-uri"
+require "watir"
+require "phantomjs"
 require "./lib/beauty_product/version"
 require "./lib/beauty_product/scraper"
 require "./lib/beauty_product/brand"

@@ -14,7 +14,17 @@ class BeautyProduct::Scraper
     end # do |brand|
   end # scrape_brands
 
-  
+  def self.scrape_brand_products_page
+    BeautyProduct::Brand.all.each do |brand|
+      brand_page = Nokogiri::HTML(open(brand.url))
+
+      products = brand_page.css("div.SkuGrid").first
+      products.each do |product|
+        new_product = BeautyProduct::Product.new(product.text)
+      end # |product|
+    end # |brand|
+  end # self.scrape_brand_products
+
 
 
 

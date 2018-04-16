@@ -33,5 +33,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec", "~> 3.0"
   spec.add_development_dependency "pry"
 
-  spec.add_dependency "nokogiri"
+  spec.add_dependency "nokogiri", "~> 1.8", ">= 1.8.2"
+  spec.add_dependency "watir", "~> 6.10", ">= 6.10.3"
+  spec.add_dependency "phantomjs", "~> 2.1", ">= 2.1.1.0"
 end
