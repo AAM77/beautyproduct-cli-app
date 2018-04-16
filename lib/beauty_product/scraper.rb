@@ -25,9 +25,10 @@ class BeautyProduct::Scraper
       products = brand_page.css("div.productGrid a")
       products.each do |product|
         product_name = product.css("h3.productGridTitle").text
-        new_product = BeautyProduct::Product.new(product_name)
         product_page_url = "#{cult_beauty_url}#{product.attribute("href").value}"
+        new_product = BeautyProduct::Product.new(product_name)
         new_product.url = product_page_url[/[^#]+/]
+        new_product.brand = brand
       end # |product|
     end # |brand|
   end # self.scrape_brand_products_page
@@ -42,11 +43,11 @@ class BeautyProduct::Scraper
 
       product_info.each do |info|
         if info.css("div.itemHeader span").text == "Description"
-          product.description = info.css("div.itemContent p").text
+          product.description = info.css("div.itemContent").collect {|p| p.text}.join(" ")
         elsif info.css("div.itemHeader span").text == "How to use"
-          product.directions = info.css("div.itemContent p").text
+          product.directions = info.css("div.itemContent").collect {|p| p.text}.join(" ")
         elsif info.css("div.itemHeader span").text == "Full ingredients list"
-          product.ingredients = info.css("div.itemContent p").text
+          product.ingredients =  info.css("div.itemContent").collect {|p| p.text}.join(" ")
         end # |if|
       end # |info|
 
@@ -65,16 +66,52 @@ class BeautyProduct::Scraper
 end # class Scraper
 
 =begin
+
+BeautyProduct::Scraper.scrape_brand_page
+BeautyProduct::Scraper.scrape_brand_products_page
+BeautyProduct::Scraper.scrape_product_page
+
+BeautyProduct::Brand.all
+BeautyProducut::Product.all
+
+
+product_page = Nokogiri::HTML(open("https://www.cultbeauty.co.uk/zoeva-plaisir-box.html"))
+product_info = product_page.css(".productInfo.js-product-info ul li")
+
 product_info.each do |info|
   if info.css("div.itemHeader span").text == "Description"
     puts "DESCRIPTION!!!"
-    puts info.css("div.itemContent p").text
+    puts info.css("div.itemContent").collect {|p| p.text}.join(" ")
   elsif info.css("div.itemHeader span").text == "How to use"
     puts "INSTRUCTIONS!!!!"
-    puts info.css("div.itemContent p").text
+    puts info.css("div.itemContent").collect {|p| p.text}.join(" ")
   elsif info.css("div.itemHeader span").text == "Full ingredients list"
     puts "INGREDIENTS!!!"
-    puts info.css("div.itemContent p").text
+    puts info.css("div.itemContent").collect {|p| p.text}.join(" ")
+  end # |if|
+end # |info|
+
+
+
+product_info.each do |info|
+  if info.css("div.itemHeader span").text == "Description"
+    product.description = info.css("div.itemContent").collect {|p| p.text}.join(" ")
+  elsif info.css("div.itemHeader span").text == "How to use"
+    product.directions = info.css("div.itemContent").collect {|p| p.text}.join(" ")
+  elsif info.css("div.itemHeader span").text == "Full ingredients list"
+    product.ingredients =  info.css("div.itemContent").collect {|p| p.text}.join(" ")
+  end # |if|
+end # |info|
+
+
+
+product_info.each do |info|
+  if info.css("div.itemHeader span").text == "Description"
+    description = info.css("div.itemContent p").text
+  elsif info.css("div.itemHeader span").text == "How to use"
+    directions = info.css("div.itemContent p").text
+  elsif info.css("div.itemHeader span").text == "Full ingredients list"
+    ingredients = info.css("div.itemContent p").text
   end # |if|
 end # |info|
 =end

@@ -1,6 +1,6 @@
 class BeautyProduct::Brand
 
-  attr_accessor :name, :price, :product, :products, :url
+  attr_accessor :name, :product, :products, :url
 
   @@all = []
 
