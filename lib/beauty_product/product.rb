@@ -35,7 +35,3 @@ class BeautyProduct::Product
   end # add_ingredient
 
 end # class Product
-
-
-
-"Water, Dimethicone, Polysilicone-11, Isohexadecane, Ammonium Polyacryloyldimethyl Taurate, Acetyl Glutamyl Heptapeptide-1, Tetrahexyldecyl Ascorbate (Vitamin C), Caprylic/Capric Triglyceride, Glycerin, Isoprene Glycol, Hydroxyethylacrylate / Sodium Acryloyldimethyl Taurate Copolymer, Squalane, Simmondsia Chinensis (Joj oba) Seed Oil, Glycosaminoglycans, Hyaluronic Acid, Growth Factor, Micrococcus Lysate, Copper PCA, Zinc PCA, Calcium PCA, Aloe Barbadensis Leaf Extract, Panthenol"
