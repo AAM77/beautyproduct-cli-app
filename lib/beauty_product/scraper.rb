@@ -186,3 +186,5 @@ def self.scrape_sale_product
     end # |info|
   end # |product|
 end # self.scrape_product_page
+
+=end
