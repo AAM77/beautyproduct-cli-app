@@ -162,16 +162,6 @@ def self.scrape_product_page
         product.ingredients =  info.css("div.itemContent").collect {|p| p.text}.join(" ")
       end # |if|
     end # |info|
-
-    ## ^^<#=^^ WORKING!! But, is assigning only the FIRST "p" -- FIX IT // FIX THIS
-    ## try doing a .collect on all of the paragraphs and assign the array to a single variable.
-    ## Then join the items in the array.
-    ## OR
-    ## try to do it directly  e.g. array.collect {|i| i}.join(" ") ... i.e. info.css("div.itemContent").collect { |p| p.text }.join(" ") (TRY IT)
-
-    #product.description = product_page.css(".productInfo.js-product-info ul li")[1].text
-    #product.directions = product_page.css(".productInfo.js-product-info ul li")[2].text
-    #product.ingredients = product_page.css(".productInfo.js-product-info ul li")[3].text
   end # |product|
 end # self.scrape_product_page
 
@@ -196,62 +186,3 @@ def self.scrape_sale_product
     end # |info|
   end # |product|
 end # self.scrape_product_page
-
-===================================================
-===================================================
-===================================================
-=================EXTRANEOUS CODE===================
-===================================================
-===================================================
-===================================================
-
-BeautyProduct::Scraper.scrape_brand_page
-BeautyProduct::Scraper.scrape_brand_products_page
-BeautyProduct::Scraper.scrape_product_page
-
-BeautyProduct::Brand.all
-BeautyProducut::Product.all
-
-
-product_page = Nokogiri::HTML(open("https://www.cultbeauty.co.uk/zoeva-plaisir-box.html"))
-product_info = product_page.css(".productInfo.js-product-info ul li")
-
-product_info.each do |info|
-  if info.css("div.itemHeader span").text == "Description"
-    puts "DESCRIPTION!!!"
-    puts info.css("div.itemContent").collect {|p| p.text}.join(" ")
-  elsif info.css("div.itemHeader span").text == "How to use"
-    puts "INSTRUCTIONS!!!!"
-    puts info.css("div.itemContent").collect {|p| p.text}.join(" ")
-  elsif info.css("div.itemHeader span").text == "Full ingredients list"
-    puts "INGREDIENTS!!!"
-    puts info.css("div.itemContent").collect {|p| p.text}.join(" ")
-  end # |if|
-end # |info|
-
-
-
-product_info.each do |info|
-  if info.css("div.itemHeader span").text == "Description"
-    product.description = info.css("div.itemContent").collect {|p| p.text}.join(" ")
-  elsif info.css("div.itemHeader span").text == "How to use"
-    product.directions = info.css("div.itemContent").collect {|p| p.text}.join(" ")
-  elsif info.css("div.itemHeader span").text == "Full ingredients list"
-    product.ingredients =  info.css("div.itemContent").collect {|p| p.text}.join(" ")
-  end # |if|
-end # |info|
-
-
-
-product_info.each do |info|
-  if info.css("div.itemHeader span").text == "Description"
-    description = info.css("div.itemContent p").text
-  elsif info.css("div.itemHeader span").text == "How to use"
-    directions = info.css("div.itemContent p").text
-  elsif info.css("div.itemHeader span").text == "Full ingredients list"
-    ingredients = info.css("div.itemContent p").text
-  end # |if|
-end # |info|
-=end
-
-## product_info = product_page.css(".productInfo.js-product-info ul li").text ##::CONTINUE:: YOU LEFT OFF HERE!!! -- This is a potential starting point for calling each "p"
