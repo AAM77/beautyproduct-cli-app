@@ -2,7 +2,16 @@ class BeautyProduct::Scraper
 
   attr_accessor :name
 
-  def self.scrape_sale_page
+  def initialize
+    scrape_brand_page
+    scrape_sale_page
+    scrape_product_page
+    BeautyProduct::Product.create_ingredients_array
+    BeautyProduct::Product.add_ingredients
+  end # initialize
+
+
+  def scrape_sale_page
     cult_beauty_url = "https://www.cultbeauty.co.uk"
     sale_page = Nokogiri::HTML(open("#{cult_beauty_url}/sale.html"))
 
@@ -16,7 +25,7 @@ class BeautyProduct::Scraper
   end # scrape_sale_page
 
 
-  def self.scrape_product_page
+  def scrape_product_page
     BeautyProduct::Product.all.each do |product|
       product_page = Nokogiri::HTML(open(product.url))
 
@@ -34,16 +43,14 @@ class BeautyProduct::Scraper
       end # if price
 
       ## SET DESCRIPTION, HOW TO USE, & INGREDIENTS
-
       product_info = product_page.css(".productInfo.js-product-info ul li")
-
       product_info.each do |info|
         if info.css("div.itemHeader span").text == "Description"
           product.description = info.css("div.itemContent").collect {|p| p.text}.join(" ")
         elsif info.css("div.itemHeader span").text == "How to use"
           product.directions = info.css("div.itemContent").collect {|p| p.text}.join(" ")
         elsif info.css("div.itemHeader span").text == "Full ingredients list"
-          product.ingredients =  info.css("div.itemContent").collect {|p| p.text}.join(" ")
+          product.ingredients_string = info.css("div.itemContent").collect {|p| p.text}.join(" ")
         end # |if|
       end # |info|
     end # |product|
@@ -52,7 +59,7 @@ class BeautyProduct::Scraper
 
   ## ///##/// -- Might end up deleting this -- ///##/// ##
   ## Scrapes the Brands page for all Brands & adds to the Brand class in brand.rb
-  def self.scrape_brand_page
+  def scrape_brand_page
 
     cult_beauty_url = "https://www.cultbeauty.co.uk"
 

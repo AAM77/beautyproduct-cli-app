@@ -1,8 +1,11 @@
 class BeautyProduct::CLI
+  # BeautyProduct::CLI.call
 
   def call
-    BeautyProduct::Product.products
-    BeautyProduct::Product.ingredient
+    puts "One moment, please."
+    puts "This will take a few minutes..."
+
+    BeautyProduct::Scraper.new
     main_menu
   end # call
 
@@ -11,7 +14,6 @@ class BeautyProduct::CLI
 
     puts "1. Search Product by Name"
     puts "2. Search by Ingredient (products that have it)"
-    #puts "3. Search by Ingredient (products that do not have it)"
   end # menu_options
 
   def main_menu
@@ -49,8 +51,8 @@ class BeautyProduct::CLI
       puts "================="
       puts "= Product Found ="
       puts "================="
-      puts "#{product.name} - #{product.price}"
-      puts "Ingredients include: #{product.ingredients}"
+      puts "#{product.name} - $#{product.price}"
+      puts "Ingredients include: #{product.ingredients_string}"
     else
       puts "Product not found. Type 'main menu' or 'exit'"
       main_menu
@@ -72,8 +74,8 @@ class BeautyProduct::CLI
       ingredients.each.with_index(1) do |ingredient, index|
         ingredient.products.each do |product|
           puts ""
-          puts "#{index}. #{product.name} - #{product.price}"
-          puts "Ingredients include: #{product.ingredients}"
+          puts "#{index}. #{product.name} - $#{product.price}"
+          puts "Ingredients include: #{product.ingredients_string}"
         end # do |product|
       end #do |ingredient|
 
