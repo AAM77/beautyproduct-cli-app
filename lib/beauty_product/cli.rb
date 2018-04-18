@@ -72,16 +72,16 @@ class BeautyProduct::CLI
 
     product = BeautyProduct::Product.all.detect { |element| user_input == element.name.downcase }
 
-    if product != nil
+    if product.nil?
+      puts "PRODUCT NOT FOUND"
+      product_menu
+    elsif !product.nil?
       puts ""
       puts "================="
       puts "= Product Found ="
       puts "================="
       puts "#{product.name} - (BRAND: #{product.brand}) - $#{product.price}"
       product.ingredients_string.nil? ? (puts "No Ingredients listed for this product.") : (puts "Ingredients include: #{product.ingredients_string}")
-
-    elsif product.nil? || product.empty?
-      puts "PRODUCT NOT FOUND"
     end # if not nil
   end # match_product
 
@@ -93,7 +93,10 @@ class BeautyProduct::CLI
 
     ingredients = BeautyProduct::Ingredient.all.select { |element| element.name.downcase == user_input }
 
-    if ingredients != nil
+    if ingredients.nil? || ingredients.empty?
+      puts "INGREDIENT NOT FOUND. NO PRODUCTS"
+      ingredient_menu
+    elsif !ingredients.nil?
       puts ""
       puts "=================="
       puts "= Products Found ="
@@ -106,23 +109,92 @@ class BeautyProduct::CLI
         end # do |product|
       end #do |ingredient|
 
-    elsif ingredients.nil? || ingredients.empty?
-      puts "INGREDIENT NOT FOUND"
+
     end # if user_input in products
   end # match_yes_ingredient
 
 
 
   def product_menu
-    puts "\nSearch for a different product? (yes/no)"
-    run_same_method_again?
+    puts "\nWhat else would you like to do?"
+    ## search_again?(method(:ingredient_menu))
+    puts "1. Search again"
+    puts "2. Go to the Main Menu"
+    puts "Type 'exit' to exit the program."
+    user_input = gets.downcase.strip
+
+    case user_input
+    when "1", "search again"
+      match_product
+    when "2", "main menu"
+      main_menu
+    when "exit"
+      puts "Exiting the program. Goodbye!"
+    else
+      puts "Invalid Entry"
+      product_menu
+    end # case user_input
   end # product_menu
 
   def ingredient_menu
-    puts "\nSearch using another ingredient? (yes/no)"
-    run_same_method_again?
-  end # product_menu
+    puts "\nWhat else would you like to do?"
+    ## search_again?(method(:ingredient_menu))
+    puts "1. Search again"
+    puts "2. Go to the Main Menu"
+    puts "Type 'exit' to exit the program."
+    user_input = gets.downcase.strip
+
+    case user_input
+    when "1", "search again"
+      match_yes_ingredient
+    when "2", "main menu"
+      main_menu
+    when "exit"
+      puts "Exiting the program. Goodbye!"
+    else
+      puts "Invalid Entry"
+      ingredient_menu
+    end # case user_input
+  end # ingredient_menu
   ## Might Need to Delete
+end # class CLI
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+=begin
+
+
+  def search_again?(method_name)
+    puts "1. Search again."
+    puts "2. Main Menu"
+    puts "Type 'exit' to exit the program."
+    user_input = gets.downcase.strip
+
+    case user_input
+    when "1"
+      method_name.call
+    when "2"
+      main_menu
+    when "exit"
+      puts "Exiting the program. Goodbye!"
+    else
+      puts "Invalid Entry"
+      search_again?
+    end # case user_input
+  end # search_again?
+
 
   def run_same_method_again?
     puts "\nType 'yes', 'no', or 'exit'"
@@ -158,7 +230,6 @@ class BeautyProduct::CLI
     end # case user_input
   end # return_to_main_menu?
 
-=begin
 
 
   def run_method_again
@@ -182,5 +253,3 @@ class BeautyProduct::CLI
 
 
 =end
-
-end # class CLI
