@@ -51,14 +51,14 @@ class BeautyProduct::CLI
 
   def list_products
     product_names = BeautyProduct::Product.all.collect { |product| [product.name, product.brand] } ## might need to remove array and product.brand
-    puts "#{product_names.size} found"
+    puts "\n#{product_names.size} products found"
     puts "The following items are on sale:"
     product_names.sort.each.with_index(1) { |product, index| puts "#{index}. #{product[0]}" }
   end # list_products
 
   def list_ingredients
     ingredient_names = BeautyProduct::Ingredient.all.collect { |ingredient| ingredient.name }.uniq
-    puts "#{ingredient_names.size} found"
+    puts "\n#{ingredient_names.size} ingredients found"
     puts "The following ingredients are found in the on sale items:"
     ingredient_names.sort.each.with_index(1) { |ingredient, index| puts "#{index}. #{ingredient}" }
   end # list_ingredients
@@ -77,9 +77,10 @@ class BeautyProduct::CLI
       puts "\nPRODUCT NOT FOUND."
       product_menu
     elsif !products.nil?
-      puts "\n=================="
-      puts "= Products Found ="
-      puts "=================="
+      puts "\nSearching for products with '#{user_input}' in their name..."
+      puts "\n==================================="
+      puts "= #{products.size} Products Found ="
+      puts "==================================="
       products.each.with_index(1) do |product, index|
         puts "\n#{index}. #{product.name} - (BRAND: #{product.brand}) - $#{product.price}"
         product.ingredients_string.nil? ? (puts "No Ingredients listed for this product.") : (puts "Ingredients include: #{product.ingredients_string}")
@@ -102,9 +103,10 @@ class BeautyProduct::CLI
       puts "\nNO PRODUCTS WITH THIS INGREDIENT."
       yes_ingredient_menu
     elsif !products.nil?
-      puts "\n=================="
-      puts "= Products Found ="
-      puts "=================="
+      puts "\nSearching for products with '#{user_input}'..."
+      puts "\n==================================="
+      puts "= #{products.size} Products Found ="
+      puts "==================================="
       products.each.with_index(1) do |product, index|
         puts "\n#{index}. #{product.name} - (BRAND: #{product.brand}) - $#{product.price}"
         puts "Ingredients include: #{product.ingredients_string}"
@@ -127,9 +129,10 @@ class BeautyProduct::CLI
       puts "\nSORRY. Your search returned no results."
       no_ingredient_menu
     elsif !products.nil?
-      puts "\n=================="
-      puts "= Products Found ="
-      puts "=================="
+      puts "\nSearching for products without '#{user_input}'..."
+      puts "\n==================================="
+      puts "= #{products.size} Products Found ="
+      puts "==================================="
       products.each.with_index(1) do |product, index|
         puts "\n#{index}. #{product.name} - (BRAND: #{product.brand}) - $#{product.price}"
         puts "Ingredients include: #{product.ingredients_string}"
@@ -163,6 +166,7 @@ class BeautyProduct::CLI
       main_menu
     when "exit"
       puts "Exiting the program. Goodbye!"
+      return
     else
       puts "\nINVALID ENTRY"
       product_menu

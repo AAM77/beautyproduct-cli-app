@@ -1,15 +1,12 @@
 class BeautyProduct::Scraper
 
-  attr_accessor :name
-
   def initialize
-    scrape_brand_page
+    #scrape_brand_page
     scrape_sale_page
     scrape_product_page
-    BeautyProduct::Product.create_ingredients_array
+    BeautyProduct::Product.create_ingredients_array ## Not sure if I need this...
     BeautyProduct::Product.add_ingredients
   end # initialize
-
 
   def scrape_sale_page
     cult_beauty_url = "https://www.cultbeauty.co.uk"
@@ -20,19 +17,20 @@ class BeautyProduct::Scraper
       product_name = product.css("h3.productGridTitle").text
       product_page_url = "#{cult_beauty_url}#{product.attribute("href").value}"
       new_product = BeautyProduct::Product.new(product_name)
-      new_product.url = product_page_url[/[^#]+/]
+      new_product.url = product_page_url[/[^#]+/]  #=> removes the large piece of url starting with '#'' and everything after
     end # |product|
   end # scrape_sale_page
 
-
+  ## Note: This could have been simpler.
+  ## Left as is in case I want to add more functionality in the future.
   def scrape_product_page
     BeautyProduct::Product.all.each do |product|
       product_page = Nokogiri::HTML(open(product.url))
 
-      ## SET BRAND  ///##/// -- Might end up deleting this -- ///##///
-      product.brand = product_page.css("h1 a div.productBrandTitle").text
+      product.brand = product_page.css("h1 a div.productBrandTitle").text ## Would be better if I associated with product.brand.name,
+                                                                          ## but I am leaving it as is for sake of simplicity
 
-      ## SET PRICE
+      ## SETS the PRICE
       regular_price = product_page.css("span.productPrice.js-product-price").text
       sale_price = product_page.css("span.productSpecialPrice.js-product-special-price").text
 
@@ -42,7 +40,7 @@ class BeautyProduct::Scraper
         product.price = (sale_price.to_f * 1.43).round(2).to_s
       end # if price
 
-      ## SET DESCRIPTION, HOW TO USE, & INGREDIENTS
+      ## SET PRODUCT DESCRIPTION, DIRECTIONS, & INGREDIENTS
       product_info = product_page.css(".productInfo.js-product-info ul li")
       product_info.each do |info|
         if info.css("div.itemHeader span").text == "Description"
@@ -51,29 +49,37 @@ class BeautyProduct::Scraper
           product.directions = info.css("div.itemContent").collect {|p| p.text}.join(" ")
         elsif info.css("div.itemHeader span").text == "Full ingredients list"
           product.ingredients_string = info.css("div.itemContent").collect {|p| p.text}.join(" ")
-        end # |if|
-      end # |info|
-    end # |product|
-  end # self.scrape_product_page
-
-
-  ## ///##/// -- Might end up deleting this -- ///##/// ##
-  ## Scrapes the Brands page for all Brands & adds to the Brand class in brand.rb
-  def scrape_brand_page
-
-    cult_beauty_url = "https://www.cultbeauty.co.uk"
-
-    brand_page = Nokogiri::HTML(open("#{cult_beauty_url}/brands"))
-
-    brands = brand_page.css("ul.brandsList div.letterGroup a")
-
-    brands.each do |brand|
-      new_brand = BeautyProduct::Brand.new(brand.text)
-      new_brand.url = "#{cult_beauty_url}#{brand.attribute("href").value}"
-    end # do |brand|
-  end # scrape_brands
-
+        end # if == 'Description', 'How to use', 'Full Ingredients list'
+      end # do |info|
+    end # do |product|
+  end # scrape_product_page
 end # class Scraper
+###################
+## END OF CLASS  ##
+###################
+
+
+
+=begin
+
+## SAVING FOR IF I DECIDE TO ADD BRAND FUNCTIONALITY ##
+## Scrapes the Brands page for all Brands & adds to the Brand class in brand.rb
+def scrape_brand_page
+
+  cult_beauty_url = "https://www.cultbeauty.co.uk"
+
+  brand_page = Nokogiri::HTML(open("#{cult_beauty_url}/brands"))
+
+  brands = brand_page.css("ul.brandsList div.letterGroup a")
+
+  brands.each do |brand|
+    new_brand = BeautyProduct::Brand.new(brand.text)
+    new_brand.url = "#{cult_beauty_url}#{brand.attribute("href").value}"
+  end # do |brand|
+end # scrape_brands
+
+
+=end
 
 
 
