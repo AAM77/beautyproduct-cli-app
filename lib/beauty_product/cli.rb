@@ -16,7 +16,7 @@ class BeautyProduct::CLI
     puts "2. List Ingredients"
     puts "3. Search Product by Name"
     puts "4. Search by Ingredient (products that have it)"
-   #puts "5. Search by Ingredient (products that DO NOT have it)"
+    puts "5. Search by Ingredient (products that DO NOT have it)"
   end # menu_options
 
   def main_menu
@@ -42,6 +42,9 @@ class BeautyProduct::CLI
       match_yes_ingredient
       ingredient_menu
       #return_to_main_menu? ## delete if ingredient_menu works
+    when "5"
+      match_no_ingredient
+      ingredient_menu
     when "exit"
       puts "Exiting program. Goodbye!"
       return
@@ -108,10 +111,35 @@ class BeautyProduct::CLI
           puts "Ingredients include: #{product.ingredients_string}"
         end # do |product|
       end #do |ingredient|
-
-
     end # if user_input in products
   end # match_yes_ingredient
+
+
+  def match_no_ingredient
+    user_input = nil
+    puts "Enter ingredient name for a list of products or type exit:"
+    user_input = gets.downcase.strip
+
+    ingredients = BeautyProduct::Ingredient.all.select { |element| !element.products.ingredients_array.downcase.include?(user_input) }
+
+    if ingredients.nil? || ingredients.empty?
+      puts "INGREDIENT NOT FOUND. NO PRODUCTS"
+      ingredient_menu
+    elsif !ingredients.nil?
+      puts ""
+      puts "=================="
+      puts "= Products Found ="
+      puts "=================="
+      ingredients.each.with_index(1) do |ingredient, index|
+        ingredient.products.each do |product|
+          puts ""
+          puts "#{index}. #{product.name} - (BRAND: #{product.brand}) - $#{product.price}"
+          puts "Ingredients include: #{product.ingredients_string}"
+        end # do |product|
+      end #do |ingredient|
+    end # if user_input in products
+  end # match_yes_ingredient
+
 
 
 
