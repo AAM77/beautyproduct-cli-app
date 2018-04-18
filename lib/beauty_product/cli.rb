@@ -36,15 +36,15 @@ class BeautyProduct::CLI
       main_menu
     when "3"
       match_product
-      product_menu
+      #product_menu
       #return_to_main_menu? ## delete if product_menu works
     when "4"
       match_yes_ingredient
-      ingredient_menu
+      #yes_ingredient_menu
       #return_to_main_menu? ## delete if ingredient_menu works
     when "5"
       match_no_ingredient
-      ingredient_menu
+      #no_ingredient_menu
     when "exit"
       puts "Exiting program. Goodbye!"
       return
@@ -73,18 +73,21 @@ class BeautyProduct::CLI
     puts "Enter product name to see its ingredients or type exit:"
     user_input = gets.downcase.strip
 
-    product = BeautyProduct::Product.all.detect { |element| user_input == element.name.downcase }
+    products = BeautyProduct::Product.all.select { |element| element.name.downcase.include?(user_input) }
 
-    if product.nil?
+    if products.nil?
       puts "PRODUCT NOT FOUND"
       product_menu
-    elsif !product.nil?
+    elsif !products.nil?
       puts ""
       puts "================="
-      puts "= Product Found ="
+      puts "= Products Found ="
       puts "================="
-      puts "#{product.name} - (BRAND: #{product.brand}) - $#{product.price}"
-      product.ingredients_string.nil? ? (puts "No Ingredients listed for this product.") : (puts "Ingredients include: #{product.ingredients_string}")
+      products.each.with_index(1) do |product, index|
+        puts "\n#{index}. #{product.name} - (BRAND: #{product.brand}) - $#{product.price}"
+        product.ingredients_string.nil? ? (puts "No Ingredients listed for this product.") : (puts "Ingredients include: #{product.ingredients_string}")
+      end # do |product|
+      product_menu
     end # if not nil
   end # match_product
 
@@ -94,23 +97,21 @@ class BeautyProduct::CLI
     puts "Enter ingredient name for a list of products or type exit:"
     user_input = gets.downcase.strip
 
-    ingredients = BeautyProduct::Ingredient.all.select { |element| element.name.downcase == user_input }
+    products = BeautyProduct::Product.all.select { |element| element.ingredients_string.downcase.include?(user_input) if element.ingredients_string }
 
-    if ingredients.nil? || ingredients.empty?
+    if products.nil? || products.empty?
       puts "INGREDIENT NOT FOUND. NO PRODUCTS"
-      ingredient_menu
-    elsif !ingredients.nil?
+      yes_ingredient_menu
+    elsif !products.nil?
       puts ""
       puts "=================="
       puts "= Products Found ="
       puts "=================="
-      ingredients.each.with_index(1) do |ingredient, index|
-        ingredient.products.each do |product|
-          puts ""
-          puts "#{index}. #{product.name} - (BRAND: #{product.brand}) - $#{product.price}"
-          puts "Ingredients include: #{product.ingredients_string}"
-        end # do |product|
-      end #do |ingredient|
+      products.each.with_index(1) do |product, index|
+        puts "\n#{index}. #{product.name} - (BRAND: #{product.brand}) - $#{product.price}"
+        puts "Ingredients include: #{product.ingredients_string}"
+      end # do |product|
+      yes_ingredient_menu
     end # if user_input in products
   end # match_yes_ingredient
 
@@ -120,28 +121,36 @@ class BeautyProduct::CLI
     puts "Enter ingredient name for a list of products or type exit:"
     user_input = gets.downcase.strip
 
-    ingredients = BeautyProduct::Ingredient.all.select { |element| element.name.downcase != user_input } #products.ingredients_string.downcase.include?(user_input) }
+    products = BeautyProduct::Product.all.select { |element| !element.ingredients_string.downcase.include?(user_input) if element.ingredients_string }
 
-    if ingredients.nil? || ingredients.empty?
-      puts "INGREDIENT NOT FOUND. NO PRODUCTS"
-      ingredient_menu
-    elsif !ingredients.nil?
+    if products.nil? || products.empty?
+      puts "INGREDIENT NOT FOUND. NO PRODUCTS."
+      no_ingredient_menu
+    elsif !products.nil?
       puts ""
       puts "=================="
       puts "= Products Found ="
       puts "=================="
-      ingredients.each.with_index(1) do |ingredient, index|
-        ingredient.products.each do |product|
-          puts ""
-          puts "#{index}. #{product.name} - (BRAND: #{product.brand}) - $#{product.price}"
-          puts "Ingredients include: #{product.ingredients_string}"
-        end # do |product|
-      end #do |ingredient|
+      products.each.with_index(1) do |product, index|
+        puts ""
+        puts "#{index}. #{product.name} - (BRAND: #{product.brand}) - $#{product.price}"
+        puts "Ingredients include: #{product.ingredients_string}"
+      end # do |product|
+      no_ingredient_menu
     end # if user_input in products
   end # match_yes_ingredient
 
-
-
+  def ingredient_output
+    puts ""
+    puts "=================="
+    puts "= Products Found ="
+    puts "=================="
+    products.each.with_index(1) do |product, index|
+      puts ""
+      puts "#{index}. #{product.name} - (BRAND: #{product.brand}) - $#{product.price}"
+      puts "Ingredients include: #{product.ingredients_string}"
+    end # do |product|
+  end # ingredient_output
 
   def product_menu
     puts "\nWhat else would you like to do?"
@@ -159,12 +168,13 @@ class BeautyProduct::CLI
     when "exit"
       puts "Exiting the program. Goodbye!"
     else
-      puts "Invalid Entry"
+      puts "\nINVALID ENTRY"
       product_menu
     end # case user_input
   end # product_menu
 
-  def ingredient_menu
+
+  def yes_ingredient_menu
     puts "\nWhat else would you like to do?"
     ## search_again?(method(:ingredient_menu))
     puts "1. Search again"
@@ -179,12 +189,39 @@ class BeautyProduct::CLI
       main_menu
     when "exit"
       puts "Exiting the program. Goodbye!"
+      return
     else
-      puts "Invalid Entry"
-      ingredient_menu
+      puts "\nINVALID ENTRY"
+      yes_ingredient_menu
     end # case user_input
   end # ingredient_menu
   ## Might Need to Delete
+
+
+
+  def no_ingredient_menu
+    puts "\nWhat else would you like to do?"
+    ## search_again?(method(:ingredient_menu))
+    puts "1. Search again"
+    puts "2. Go to the Main Menu"
+    puts "Type 'exit' to exit the program."
+    user_input = gets.downcase.strip
+
+    case user_input
+    when "1", "search again"
+      match_no_ingredient
+    when "2", "main menu"
+      main_menu
+    when "exit"
+      puts "Exiting the program. Goodbye!"
+      return
+    else
+      puts "\nINVALID ENTRY"
+      no_ingredient_menu
+    end # case user_input
+  end # ingredient_menu
+
+
 end # class CLI
 
 
