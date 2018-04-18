@@ -120,7 +120,7 @@ class BeautyProduct::CLI
     puts "Enter ingredient name for a list of products or type exit:"
     user_input = gets.downcase.strip
 
-    ingredients = BeautyProduct::Ingredient.all.select { |element| !element.products.ingredients_array.downcase.include?(user_input) }
+    ingredients = BeautyProduct::Ingredient.all.select { |element| element.name.downcase != user_input } #products.ingredients_string.downcase.include?(user_input) }
 
     if ingredients.nil? || ingredients.empty?
       puts "INGREDIENT NOT FOUND. NO PRODUCTS"

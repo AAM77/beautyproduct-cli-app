@@ -27,8 +27,13 @@ class BeautyProduct::Product
     self.all.each do |product|
       if !product.ingredients_array.nil?
         product.ingredients_array.each do |ingredient|
-          new_ingredient = BeautyProduct::Ingredient.new(ingredient)
-          new_ingredient.products << product
+          if !BeautyProduct::Ingredient.all.detect {|element| element.name == ingredient}
+            new_ingredient = BeautyProduct::Ingredient.new(ingredient)
+            new_ingredient.products << product
+          else
+            existing_ingredient = BeautyProduct::Ingredient.all.detect {|element| element.name == ingredient}
+            existing_ingredient.products << product
+          end # if detect ingredient
         end # each ingredient
       end # if !nil?
     end # each product
