@@ -16,6 +16,7 @@ class BeautyProduct::CLI
     puts "2. List Ingredients"
     puts "3. Search Product by Name"
     puts "4. Search by Ingredient (products that have it)"
+   #puts "5. Search by Ingredient (products that DO NOT have it)"
   end # menu_options
 
   def main_menu
@@ -35,10 +36,12 @@ class BeautyProduct::CLI
       main_menu
     when "3"
       match_product
-      return_to_main_menu?
+      product_menu
+      #return_to_main_menu? ## delete if product_menu works
     when "4"
       match_yes_ingredient
-      return_to_main_menu?
+      ingredient_menu
+      #return_to_main_menu? ## delete if ingredient_menu works
     when "exit"
       puts "Exiting program. Goodbye!"
       return
@@ -48,6 +51,19 @@ class BeautyProduct::CLI
     end # case user_input
   end # main_menu
 
+  def list_products
+    product_names = BeautyProduct::Product.all.collect { |product| [product.name, product.brand] } ## might need to remove array and product.brand
+    puts "#{product_names.size} found"
+    puts "The following items are on sale:"
+    product_names.sort.each.with_index { |product, index| puts "#{index}. #{product[0]}" }
+  end # list_products
+
+  def list_ingredients
+    ingredient_names = BeautyProduct::Product.all.collect { |ingredient| ingredient.name }
+    puts "#{ingredient_names.size}"
+    puts "The following ingredients are found in the on sale items:"
+    ingredient_names.sort.each.with_index { |ingredient, index| puts "#{index}. #{ingredient}" }
+  end # list_ingredients
 
   def match_product
     user_input = nil
@@ -62,11 +78,10 @@ class BeautyProduct::CLI
       puts "= Product Found ="
       puts "================="
       puts "#{product.name} - (BRAND: #{product.brand}) - $#{product.price}"
-      product.ingredients.nil? ? puts "No Ingredients Listed" : puts "Ingredients include: #{product.ingredients_string}"
+      product.ingredients.nil? ? puts "No Ingredients listed for this product." : puts "Ingredients include: #{product.ingredients_string}"
 
     elsif product.nil? || product.empty?
       puts "PRODUCT NOT FOUND"
-      product_menu
     end # if not nil
   end # match_product
 
@@ -91,18 +106,12 @@ class BeautyProduct::CLI
         end # do |product|
       end #do |ingredient|
 
-    else
-      puts "Ingredient not found. Type 'main menu' or 'exit'"
+    elsif ingredients.nil? || ingredients.empty?
+      puts "INGREDIENT NOT FOUND"
     end # if user_input in products
   end # match_yes_ingredient
 
 
-
-  def list_products
-    puts "The items on sale include:"
-    product_names = BeautyProduct::Product.all.collect { |product| [product.name, product.brand] }
-    product_names.sort.each.with_index { |product, index| puts "#{index}. #{product[0]}" }
-  end # list_products
 
   def product_menu
     puts "Type 'run again', 'main menu', or 'exit'"
@@ -122,7 +131,9 @@ class BeautyProduct::CLI
   end # product_menu
 
   def ingredient_menu
-    puts "Product not found. Type 'run again', 'main menu', or 'exit'"
+    puts "\nDo you wish to run again? (yes/no)"
+    puts "Type "
+    puts "Typing 'n', 'no', or 'exit' will quit the program."
     user_choice = gets.downcase.strip
 
     case user_choice
@@ -139,8 +150,7 @@ class BeautyProduct::CLI
   end # product_menu
   ## Might Need to Delete
 
-
-  def return_to_main_menu?
+  def run_method_again
     puts "\nDo you wish to return to the main menu? (yes/no)"
     puts "Typing 'n', 'no', or 'exit' will quit the program."
     user_input = gets.downcase.strip
@@ -154,8 +164,34 @@ class BeautyProduct::CLI
       return
     else
       "Invalid entry."
-      return_to_main_menu?
+      send(__method__)
+      ##return_to_main_menu? ## delete if this works
     end # case user_input
   end # return_to_main_menu?
+
+=begin
+
+
+  def run_method_again
+    puts "\nDo you wish to return to the main menu? (yes/no)"
+    puts "Typing 'n', 'no', or 'exit' will quit the program."
+    user_input = gets.downcase.strip
+
+    case user_input
+    when "y", "yes"
+      main_menu
+    when "n", "no"
+      return
+    when "exit"
+      return
+    else
+      "Invalid entry."
+      send(__method__)
+      ##return_to_main_menu? ## delete if this works
+    end # case user_input
+  end # return_to_main_menu?
+
+
+=end
 
 end # class CLI
