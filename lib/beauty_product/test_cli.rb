@@ -83,7 +83,7 @@ class BeautyProduct::CLI
       products.each.with_index(1) do |product, index|
         puts "\n#{index}. #{product.name} - (BRAND: #{product.brand}) - $#{product.price}"
       end # do |product|
-      print_product_info
+      full_product_info
       product_menu
     end # if nil / not nil
   end # match_product
@@ -109,7 +109,7 @@ class BeautyProduct::CLI
       products.each.with_index(1) do |product, index|
         puts "\n#{index}. #{product.name} - (BRAND: #{product.brand}) - $#{product.price}"
       end # do |product|
-      print_product_info
+      full_product_info
       yes_ingredient_menu
     end # if user_input in products
   end # match_yes_ingredient
@@ -135,12 +135,12 @@ class BeautyProduct::CLI
       products.each.with_index(1) do |product, index|
         puts "\n#{index}. #{product.name} - (BRAND: #{product.brand}) - $#{product.price}"
       end # do |product|
-      print_product_info
+      full_product_info
       no_ingredient_menu
     end # if user_input in products
   end # match_yes_ingredient
 
-  def print_product_info
+  def full_product_info
     puts "\nEnter an item number see more information:"
     user_selection = gets.downcase.strip
 
