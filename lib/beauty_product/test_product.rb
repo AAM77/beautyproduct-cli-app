@@ -55,34 +55,11 @@ class BeautyProduct::TestProduct
   end # product_info
 
 
-
-
-
-
-
-  def description
-  end # description
-
-  def directions
-  end # directions
-
-  def ingredients_string
-  end # ingredients_string
-
-
-
-
-
-
-
-
-
-
-
+ ## THE FOLLOWING NEEDS MAJOR REFACTORING !!
   def self.create_ingredients_array
     self.all.each do |product|
-      if !product.ingredients_string.nil?
-        product.ingredients_array = product.ingredients_string.split(", ").collect { |ingredient| ingredient.strip }
+      if !self.ingredients_string.nil?
+        self.ingredients_array = self.ingredients_string.split(", ").collect { |ingredient| ingredient.strip }
       end
     end # do |product|
   end # ingredient
