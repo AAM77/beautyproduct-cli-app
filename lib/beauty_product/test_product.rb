@@ -1,7 +1,7 @@
 
 class BeautyProduct::TestProduct
 
-  attr_accessor :name, :brand, :description, :directions, :ingredients_array, :ingredients_string, :price, :url
+  attr_accessor :name, :brand, :description, :directions, :ingredients_array, :ingredients_string, :retail_price, :discount_price, :url
 
   @@all = []
 
@@ -21,7 +21,31 @@ class BeautyProduct::TestProduct
     @@all
   end # all
 
-  def
+  def doc
+    @doc ||= product_page = Nokogiri::HTML(open(self.url))
+  end # doc
+
+  def retail_price
+    @retail_price = doc.css("span.productPrice.js-product-price").text
+  end # .retail_price
+
+  def discount_price
+    @discount_price = doc.css("span.productSpecialPrice.js-product-special-price").text
+  end # .discount_price
+
+  def convert_price(price)
+    us_dollars = price.to_f * 1.43).round(2).to_s
+  end # convert_price
+
+
+
+
+
+
+
+
+
+
 
   def self.create_ingredients_array
     self.all.each do |product|
