@@ -18,7 +18,7 @@ class BeautyProduct::Product
     self.all.each do |product|
       if !product.ingredients_string.nil?
         product.ingredients_array = product.ingredients_string.split(", ").collect { |ingredient| ingredient.strip }
-      end
+      end # if !nil?
     end # do |product|
   end # ingredient
 

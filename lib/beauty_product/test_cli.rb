@@ -73,7 +73,7 @@ class BeautyProduct::CLI
     products = BeautyProduct::Product.all.select { |element| element.name.downcase.include?(user_input) }
 
     if products.nil? || products.empty?
-      puts "\nPRODUCT NOT FOUND."
+      puts "\nSORRY. Your search returned 0 results."
       product_menu
     elsif !products.nil?
       puts "\nSearching for products with '#{user_input}' in their name..."
@@ -82,10 +82,10 @@ class BeautyProduct::CLI
       puts "==================================="
       products.each.with_index(1) do |product, index|
         puts "\n#{index}. #{product.name} - (BRAND: #{product.brand}) - $#{product.price}"
-        product.ingredients_string.nil? ? (puts "No Ingredients listed for this product.") : (puts "Ingredients include: #{product.ingredients_string}")
       end # do |product|
+      print_product_info
       product_menu
-    end # if not nil
+    end # if nil / not nil
   end # match_product
 
   #######################################################
@@ -99,7 +99,7 @@ class BeautyProduct::CLI
     products = BeautyProduct::Product.all.select { |element| element.ingredients_string.downcase.include?(user_input) if element.ingredients_string }
 
     if products.nil? || products.empty?
-      puts "\nNO PRODUCTS WITH THIS INGREDIENT."
+      puts "\nSORRY. Your search returned 0 results."
       yes_ingredient_menu
     elsif !products.nil?
       puts "\nSearching for products with '#{user_input}'..."
@@ -108,8 +108,8 @@ class BeautyProduct::CLI
       puts "==================================="
       products.each.with_index(1) do |product, index|
         puts "\n#{index}. #{product.name} - (BRAND: #{product.brand}) - $#{product.price}"
-        puts "Ingredients include: #{product.ingredients_string}"
       end # do |product|
+      print_product_info
       yes_ingredient_menu
     end # if user_input in products
   end # match_yes_ingredient
@@ -125,7 +125,7 @@ class BeautyProduct::CLI
     products = BeautyProduct::Product.all.select { |element| !element.ingredients_string.downcase.include?(user_input) if element.ingredients_string }
 
     if products.nil? || products.empty?
-      puts "\nSORRY. Your search returned no results."
+      puts "\nSORRY. Your search returned 0 results."
       no_ingredient_menu
     elsif !products.nil?
       puts "\nSearching for products without '#{user_input}'..."
@@ -134,22 +134,32 @@ class BeautyProduct::CLI
       puts "==================================="
       products.each.with_index(1) do |product, index|
         puts "\n#{index}. #{product.name} - (BRAND: #{product.brand}) - $#{product.price}"
-        puts "Ingredients include: #{product.ingredients_string}"
       end # do |product|
-
-      if products.size == 1
-        puts "\nSelect an option:"
-        puts "1. View Product Description"
-        puts "2. View Product Directions"
-        puts "3. More Options"
-        user_selection = gets.downcse.strip
-
-        case user_selection
-        when "1"
-          puts "The"
+      print_product_info
       no_ingredient_menu
     end # if user_input in products
   end # match_yes_ingredient
+
+  def print_product_info
+    puts "\nEnter an item number see more information:"
+    user_selection = gets.downcase.strip
+
+    product_index = (user_selection - 1).to_i
+    product = products[product_index]
+    puts "\n#{index}. #{product.name} - (BRAND: #{product.brand}) - $#{product.price}"
+    puts "\nProduct Name: #{product.name}"
+    puts "Product Brand: #{product.brand}"
+    puts "Product Price: #{product.price}"
+
+    puts "\nProduct Description:"
+    puts "#{product.description}"
+
+    puts "\nProduct Directions:"
+    puts "#{product.directions}"
+
+    puts "\nIngredients include:"
+    product.ingredients_string.nil? ? (puts "No Ingredients listed for this product.") : (puts "#{product.ingredients_string}")
+  end # print_product_info
 
 
   #######################################################
