@@ -83,7 +83,7 @@ class BeautyProduct::CLI
       products.each.with_index(1) do |product, index|
         puts "\n#{index}. #{product.name} - (BRAND: #{product.brand}) - $#{product.price}"
       end # do |product|
-      full_product_info
+      full_product_info(products)
       product_menu
     end # if nil / not nil
   end # match_product
@@ -109,7 +109,7 @@ class BeautyProduct::CLI
       products.each.with_index(1) do |product, index|
         puts "\n#{index}. #{product.name} - (BRAND: #{product.brand}) - $#{product.price}"
       end # do |product|
-      full_product_info
+      full_product_info(products)
       yes_ingredient_menu
     end # if user_input in products
   end # match_yes_ingredient
@@ -135,26 +135,30 @@ class BeautyProduct::CLI
       products.each.with_index(1) do |product, index|
         puts "\n#{index}. #{product.name} - (BRAND: #{product.brand}) - $#{product.price}"
       end # do |product|
-      full_product_info
+      full_product_info(products)
       no_ingredient_menu
     end # if user_input in products
   end # match_yes_ingredient
 
-  def full_product_info
-    puts "\nEnter an item number see more information:"
-    user_selection = gets.downcase.strip
+  def full_product_info(products)
+    user_selection = nil
 
-    product_index = (user_selection - 1).to_i
+    until 1 <= user_selection && user_selection <= products.size
+      puts "\nEnter an item number see more information:"
+      user_selection = gets.downcase.strip.to_i
+    end # until
+
+    product_index = (user_selection - 1)
     product = products[product_index]
-    puts "\n#{index}. #{product.name} - (BRAND: #{product.brand}) - $#{product.price}"
+
     puts "\nProduct Name: #{product.name}"
     puts "Product Brand: #{product.brand}"
-    puts "Product Price: #{product.price}"
+    puts "Product Price: $#{product.price}"
 
     puts "\nProduct Description:"
     puts "#{product.description}"
 
-    puts "\nProduct Directions:"
+    puts "\nHow to Use:"
     puts "#{product.directions}"
 
     puts "\nIngredients include:"

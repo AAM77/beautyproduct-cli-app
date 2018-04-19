@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Mohammad Adeel"]
   spec.email         = ["Adeel.A.Mhd@gmail.com"]
   spec.files         = ["lib/worlds_best_restaurant/brand.rb", "lib/worlds_best_restaurant/cli.rb", "lib/beauty_product/ingredient.rb", "lib/beauty_product/product.rb", "lib/beauty_product/scraper.rb", "config/environment.rb"]
-  spec.description   = "Provides details on Sales products at cultbeauty.co.uk"
+  spec.summary   = "Provides details on Sales products at cultbeauty.co.uk"
   spec.homepage      = 'https://github.com/AAM77/beautyproduct-cli-app'
   spec.license       = "AGPL-3.0"
   spec.executables   = "bin/beauty_product"
@@ -34,6 +34,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler", "~> 1.16"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.0"
-  spec.add_development_dependency "pry", '~> 0.10.4'
+  spec.add_development_dependency "pry", '>= 0'
   spec.add_dependency "nokogiri", "~> 1.8", ">= 1.8.2"
 end
