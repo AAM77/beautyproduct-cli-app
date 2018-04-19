@@ -7,6 +7,9 @@ class BeautyProduct::CLI
     puts "One moment, please."
     puts "This should take less than a minute..."
 
+    BeautyProduct::Product.all.clear
+    BeautyProduct::Ingredient.all.clear
+    BeautyProduct::Brand.all.clear
     BeautyProduct::Scraper.new
 
     puts "\n#####################################################"
