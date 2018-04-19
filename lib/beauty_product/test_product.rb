@@ -5,10 +5,19 @@ class BeautyProduct::TestProduct
 
   @@all = []
 
-  def initialize(name = nil, price = nil, ingredient_string = nil,  )
+  def initialize(name = nil, url = nil, price = nil, ingredient_string = nil)
     @name = name
     @@all << self
   end # initialize
+
+  def self.fetch_product_details(product)
+    cult_beauty_url = "https://www.cultbeauty.co.uk"
+    product_name = product.css("h3.productGridTitle").text
+    product_page_url = "#{cult_beauty_url}#{product.attribute("href").value}"[/[^#]+/] #=> removes the large piece of url starting with '#'' and everything after
+    #new_product.url = product_page_url[/[^#]+/]
+
+    self.new(product_name, product_page_url, [..]) #=> need a break: LEFT OFF HERE.
+  end # .fetch_product_details()
 
   def self.all
     @@all

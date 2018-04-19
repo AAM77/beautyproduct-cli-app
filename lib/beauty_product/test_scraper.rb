@@ -21,7 +21,12 @@ class BeautyProduct::TestScraper
 
   def create_products
     self.scrape_discount_products.each do |product|
-      BeautyProduct::
+      BeautyProduct::TestProduct.fetch_product_details(product)
+    end # do |product|
+  end # create_products
+  
+
+
       product_name = product.css("h3.productGridTitle").text
       product_page_url = "#{cult_beauty_url}#{product.attribute("href").value}"
       new_product = BeautyProduct::Product.new(product_name)
