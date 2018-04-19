@@ -41,7 +41,7 @@ class BeautyProduct::CLI
       match_no_ingredient
     when "exit"
       puts "Exiting program. Goodbye!"
-      return
+      exit
     else
       puts "\nINVALID ENTRY!"
       main_menu
@@ -74,7 +74,7 @@ class BeautyProduct::CLI
     puts "\nSearching for products with '#{user_input}' in their name..."
 
     display_search_results(products)
-    product_menu { send(match_product) }
+    display_sub_menu { send(match_product) }
   end # match_product
 
   #######################################################
@@ -89,7 +89,7 @@ class BeautyProduct::CLI
     puts "\nSearching for products WITH '#{user_input}' in their ingredients list..."
 
     display_search_results(products)
-    yes_ingredient_menu
+    display_sub_menu { send(match_yes_ingredient) }
   end # match_yes_ingredient
 
   ########################################################
@@ -104,7 +104,7 @@ class BeautyProduct::CLI
     puts "\nSearching for products that WITHOUT '#{user_input}' in their ingredients list..."
 
     display_search_results(products)
-    no_ingredient_menu
+    display_sub_menu { send(match_no_ingredient) }
   end # match_yes_ingredient
 
   #######################################################
@@ -153,75 +153,37 @@ class BeautyProduct::CLI
   end # print_product_info
 
   #######################################################
-  ##          SUB-MENUS for MAIN-MENU OPTIONS          ##
+  ##                OPTIONS for SUB-MENU               ##
   #######################################################
   def sub_menu_options_text
     puts "\nWhat else would you like to do?"
     puts "1. Search again"
     puts "2. Go to the Main Menu"
-    puts "Type 'exit' to exit the program."
+    puts "Type 1, 2, or 'exit'"
   end # sub_menu_options_text
 
-  ## DELETE ONCE YOU REPLACE WITH UNIVERSAL SUB-MENU
-  ## FIRST: NEED TO FIGURE OUT HOW TO CORRECTLY PASS METHOD AS PARAMETER
-  def product_menu
-    sub_menu_options_text
-    user_input = gets.downcase.strip
+  #######################################################
+  ##                DISPLAYS a SUB-MENU                ##
+  #######################################################
+  def display_sub_menu
+    user_input = nil
 
-    case user_input
-    when "1", "search again"
-      yield
-    when "2", "main menu"
-      main_menu
-    when "exit"
-      puts "Exiting the program. Goodbye!"
-      return
-    else
-      puts "\nINVALID ENTRY"
-      product_menu
-    end # case user_input
+    until !user_input.nil? && (user_input == 1 || user_input == 2 || user_input == 'exit')
+      sub_menu_options_text
+      user_input = gets.downcase.strip
+
+      if user_input == "1"
+        yield
+      elsif user_input == "2"
+        main_menu
+      elsif user_input == 'exit'
+        puts "Exiting program. Thank you for using it and Goodbye!"
+        exit
+      else
+        "\nINVALID ENTRY"
+      end # if user_input ==
+    end # until user_input not nil && --
   end # product_menu
-
-  ## DELETE ONCE YOU REPLACE WITH UNIVERSAL SUB-MENU
-  ##FIRST: NEED TO FIGURE OUT HOW TO CORRECTLY PASS METHOD AS PARAMETER
-  def yes_ingredient_menu
-    sub_menu_options_text
-    user_input = gets.downcase.strip
-
-    case user_input
-    when "1", "search again"
-      match_yes_ingredient
-    when "2", "main menu"
-      main_menu
-    when "exit"
-      puts "Exiting the program. Goodbye!"
-      return
-    else
-      puts "\nINVALID ENTRY"
-      yes_ingredient_menu
-    end # case user_input
-  end # ingredient_menu
-  ## Might Need to Delete
-
-  ## DELETE ONCE YOU REPLACE WITH UNIVERSAL SUB-MENU
-  ## FIRST: NEED TO FIGURE OUT HOW TO CORRECTLY PASS METHOD AS PARAMETER
-  def no_ingredient_menu
-    sub_menu_options_text
-    user_input = gets.downcase.strip
-
-    case user_input
-    when "1", "search again"
-      match_no_ingredient
-    when "2", "main menu"
-      main_menu
-    when "exit"
-      puts "Exiting the program. Goodbye!"
-      return
-    else
-      puts "\nINVALID ENTRY"
-      no_ingredient_menu
-    end # case user_input
-  end # ingredient_menu
 end # class CLI
 ###################
 ## END OF CLASS  ##
