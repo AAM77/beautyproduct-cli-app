@@ -143,8 +143,8 @@ class BeautyProduct::CLI
   def full_product_info(products)
     user_selection = nil
 
-    until 1 <= user_selection && user_selection <= products.size
-      puts "\nEnter an item number see more information:"
+    until (!user_selection.nil? && 1 <= user_selection && user_selection <= products.size)
+      puts "\nEnter a valid item number from the list see more information (1 - #{products.size}):"
       user_selection = gets.downcase.strip.to_i
     end # until
 
