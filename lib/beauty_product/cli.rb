@@ -1,5 +1,9 @@
 class BeautyProduct::CLI
 
+  def current_method
+    @current_method = method_name
+  end # current_method_name
+
   def call
     puts "One moment, please."
     puts "This should take less than a minute..."
@@ -73,8 +77,9 @@ class BeautyProduct::CLI
     products = BeautyProduct::Product.all.select { |element| element.name.downcase.include?(user_input) }
     puts "\nSearching for products with '#{user_input}' in their name..."
 
+    @current_method = :match_product
     display_search_results(products)
-    display_sub_menu { send(match_product) }
+    display_sub_menu
   end # match_product
 
   #######################################################
@@ -88,8 +93,9 @@ class BeautyProduct::CLI
     products = BeautyProduct::Product.all.select { |element| element.ingredients_string.downcase.include?(user_input) if element.ingredients_string }
     puts "\nSearching for products WITH '#{user_input}' in their ingredients list..."
 
+    @current_method = :match_yes_ingredient
     display_search_results(products)
-    display_sub_menu { send(match_yes_ingredient) }
+    display_sub_menu
   end # match_yes_ingredient
 
   ########################################################
@@ -97,14 +103,15 @@ class BeautyProduct::CLI
   ########################################################
   def match_no_ingredient
     user_input = nil
-    puts "Enter ingredient name for a list of products or type exit:"
+    puts "Enter ingredient name for a list of products:"
     user_input = gets.downcase.strip
 
     products = BeautyProduct::Product.all.select { |element| !element.ingredients_string.downcase.include?(user_input) if element.ingredients_string }
     puts "\nSearching for products that WITHOUT '#{user_input}' in their ingredients list..."
 
+    @current_method = :match_no_ingredient
     display_search_results(products)
-    display_sub_menu { send(match_no_ingredient) }
+    display_sub_menu
   end # match_yes_ingredient
 
   #######################################################
@@ -166,25 +173,32 @@ class BeautyProduct::CLI
   ##                DISPLAYS a SUB-MENU                ##
   #######################################################
   def display_sub_menu
-    user_input = nil
+    sub_menu_options_text
+    user_input = gets.downcase.strip
 
-    until !user_input.nil? && (user_input == 1 || user_input == 2 || user_input == 'exit')
-      sub_menu_options_text
-      user_input = gets.downcase.strip
-
-      if user_input == "1"
-        yield
-      elsif user_input == "2"
-        main_menu
-      elsif user_input == 'exit'
-        puts "Exiting program. Thank you for using it and Goodbye!"
-        exit
-      else
-        "\nINVALID ENTRY"
-      end # if user_input ==
-    end # until user_input not nil && --
-  end # product_menu
+    case user_input
+    when "1"
+      send(@current_method)
+    when "2"
+      main_menu
+    when 'exit'
+      puts "Exiting program. Goodbye!"
+      exit
+    else
+      puts "\nINVALID ENTRY"
+      display_sub_menu
+    end # case user_input
+  end # display_sub_menu
 end # class CLI
+
+def inner_method(method_name)
+   calling_method = method_name
+   previous_call_method = calling_method
+   puts "Inner Method, here"
+   puts "This is the parameter: #{method_name}"
+   puts "This is the calling_method: #{calling_method}"
+   puts "This is the previous_call_method: #{previous_call_method}"
+end
 ###################
 ## END OF CLASS  ##
 ###################
