@@ -73,6 +73,9 @@ class BeautyProduct::CLI
     product_names.sort.each.with_index(1) { |product, index| puts "#{index}. #{product[0]}" }
   end # list_products
 
+  #######################################################################
+  ## Provides a list of ingredients present in the products being sold ##
+  #######################################################################
   def list_ingredients
     ingredient_names = BeautyProduct::Ingredient.all.collect { |ingredient| ingredient.name }.uniq
     puts "\n#{ingredient_names.size} ingredients found"
@@ -80,9 +83,9 @@ class BeautyProduct::CLI
     ingredient_names.sort.each.with_index(1) { |ingredient, index| puts "#{index}. #{ingredient}" }
   end # list_ingredients
 
-  ###############################################################################
-  ## Provides a list of ingredients presents in the products on the sales page ##
-  ###############################################################################
+  ##################################################################
+  ## Searches for products with the specified keyword in its name ##
+  ##################################################################
   def match_product
     puts "Enter the name of the product you wish to look for (partial or exact match):"
     user_input = gets.downcase.strip

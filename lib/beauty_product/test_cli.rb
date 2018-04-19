@@ -1,4 +1,4 @@
-class BeautyProduct::CLI
+class BeautyProduct::TestCLI
 
   def call
     puts "One moment, please."
