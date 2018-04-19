@@ -1,4 +1,4 @@
-class BeautyProduct::Scraper
+class BeautyProduct::TestScraper
 
   def initialize
     #scrape_brand_page
@@ -18,7 +18,10 @@ class BeautyProduct::Scraper
   def scrape_discount_products
     self.get_sale_index_page.css("div.productGrid a")
   end # scrape_discount_products
-    products.each do |product|
+
+  def create_products
+    self.scrape_discount_products.each do |product|
+      BeautyProduct::
       product_name = product.css("h3.productGridTitle").text
       product_page_url = "#{cult_beauty_url}#{product.attribute("href").value}"
       new_product = BeautyProduct::Product.new(product_name)

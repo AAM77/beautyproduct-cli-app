@@ -1,11 +1,11 @@
 
-class BeautyProduct::Product
+class BeautyProduct::TestProduct
 
   attr_accessor :name, :brand, :description, :directions, :ingredients_array, :ingredients_string, :price, :url
 
   @@all = []
 
-  def initialize(name)
+  def initialize(name = nil, price = nil, ingredient_string = nil,  )
     @name = name
     @@all << self
   end # initialize
