@@ -25,6 +25,10 @@ class BeautyProduct::TestProduct
     @doc ||= product_page = Nokogiri::HTML(open(self.url))
   end # doc
 
+  def brand
+    @brand = doc.css("h1 a div.productBrandTitle").text
+  end # brand
+
   def retail_price
     @retail_price = doc.css("span.productPrice.js-product-price").text
   end # .retail_price
@@ -36,6 +40,34 @@ class BeautyProduct::TestProduct
   def convert_price(price)
     us_dollars = price.to_f * 1.43).round(2).to_s
   end # convert_price
+
+  def product_info
+     product_info = doc.css(".productInfo.js-product-info ul li")
+     product_info.each do |info|
+       if info.css("div.itemHeader span").text == "Description"
+         self.description = info.css("div.itemContent").collect {|p| p.text}.join(" ")
+       elsif info.css("div.itemHeader span").text == "How to use"
+         self.directions = info.css("div.itemContent").collect {|p| p.text}.join(" ")
+       elsif info.css("div.itemHeader span").text == "Full ingredients list"
+         self.ingredients_string = info.css("div.itemContent").collect {|p| p.text}.join(" ")
+       end # if css().text == 'Description', 'How to use', 'Full Ingredients list'
+     end # do |info|
+  end # product_info
+
+
+
+
+
+
+
+  def description
+  end # description
+
+  def directions
+  end # directions
+
+  def ingredients_string
+  end # ingredients_string
 
 
 

@@ -8,13 +8,13 @@ class BeautyProduct::TestScraper
     BeautyProduct::Product.add_ingredients
   end # initialize
 
-  ## Scrapes the Sales Page
-  ## Stores the product url
+  ## Scrapes the sale page
   def get_sale_index_page
     cult_beauty_url = "https://www.cultbeauty.co.uk"
     Nokogiri::HTML(open("#{cult_beauty_url}/sale.html"))
   end # get_sale_index_page
 
+  ## Scrapes the products
   def scrape_discount_products
     self.get_sale_index_page.css("div.productGrid a")
   end # scrape_discount_products
@@ -24,47 +24,6 @@ class BeautyProduct::TestScraper
       BeautyProduct::TestProduct.fetch_product_details(product)
     end # do |product|
   end # create_products
-
-      product_name = product.css("h3.productGridTitle").text
-      product_page_url = "#{cult_beauty_url}#{product.attribute("href").value}"
-      new_product = BeautyProduct::Product.new(product_name)
-      new_product.url = product_page_url[/[^#]+/]  #=> removes the large piece of url starting with '#'' and everything after
-    end # |product|
-  end # scrape_sale_page
-
-  ## Note: This could have been simpler.
-  ## Left as is in case I want to add more functionality in the future.
-  def scrape_product_page
-    BeautyProduct::Product.all.each do |product|
-      product_page = Nokogiri::HTML(open(product.url))
-
-      product.brand = product_page.css("h1 a div.productBrandTitle").text ## Would be better if I associated with product.brand.name,
-                                                                          ## but I am leaving it as is for sake of simplicity
-
-      ## GETS PRICE & CONVERTS IT FROM POUNDS to USD ##
-      regular_price = product_page.css("span.productPrice.js-product-price").text
-      sale_price = product_page.css("span.productSpecialPrice.js-product-special-price").text
-      ## def convert_price
-      if sale_price.nil?
-        product.price = (regular_price.to_f * 1.43).round(2).to_s
-      else
-        product.price = (sale_price.to_f * 1.43).round(2).to_s
-      end # if price
-
-
-      ## SET PRODUCT DESCRIPTION, DIRECTIONS, & INGREDIENTS ##
-      product_info = product_page.css(".productInfo.js-product-info ul li")
-      product_info.each do |info|
-        if info.css("div.itemHeader span").text == "Description"
-          product.description = info.css("div.itemContent").collect {|p| p.text}.join(" ")
-        elsif info.css("div.itemHeader span").text == "How to use"
-          product.directions = info.css("div.itemContent").collect {|p| p.text}.join(" ")
-        elsif info.css("div.itemHeader span").text == "Full ingredients list"
-          product.ingredients_string = info.css("div.itemContent").collect {|p| p.text}.join(" ")
-        end # if css().text == 'Description', 'How to use', 'Full Ingredients list'
-      end # do |info|
-    end # do |product|
-  end # scrape_product_page
 end # class Scraper
 ###################
 ## END OF CLASS  ##
