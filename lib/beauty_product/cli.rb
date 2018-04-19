@@ -74,11 +74,11 @@ class BeautyProduct::CLI
     puts "\nSearching for products with '#{user_input}' in their name..."
 
     display_search_results(products)
-    product_menu
+    product_menu { send(match_product) }
   end # match_product
 
   #######################################################
-  ## Searches for products WITH specified ingredient##
+  ##  Searches for products WITH specified ingredient  ##
   #######################################################
   def match_yes_ingredient
     user_input = nil
@@ -92,9 +92,9 @@ class BeautyProduct::CLI
     yes_ingredient_menu
   end # match_yes_ingredient
 
-  #######################################################
-  ## Searches for products WITHOUT specified ingredient##
-  #######################################################
+  ########################################################
+  ## Searches for products WITHOUT specified ingredient ##
+  ########################################################
   def match_no_ingredient
     user_input = nil
     puts "Enter ingredient name for a list of products or type exit:"
@@ -107,6 +107,9 @@ class BeautyProduct::CLI
     no_ingredient_menu
   end # match_yes_ingredient
 
+  #######################################################
+  ##            Displays the Search Results            ##
+  #######################################################
   def display_search_results(products)
     if products.nil? || products.empty?
       puts "\nSORRY. Your search returned 0 results."
@@ -121,6 +124,9 @@ class BeautyProduct::CLI
     end # if user_input in products
   end # display_search_results()
 
+  ########################################################
+  ##          Displays the Product's Full Info          ##
+  ########################################################
   def full_product_info(products)
     user_selection = nil
 
@@ -146,11 +152,9 @@ class BeautyProduct::CLI
     product.ingredients_string.nil? ? (puts "No Ingredients listed for this product.") : (puts "#{product.ingredients_string}")
   end # print_product_info
 
-
   #######################################################
-  ## SUB-MENUS for MAIN-MENU OPTIONS##
+  ##          SUB-MENUS for MAIN-MENU OPTIONS          ##
   #######################################################
-
   def sub_menu_options_text
     puts "\nWhat else would you like to do?"
     puts "1. Search again"
@@ -159,14 +163,14 @@ class BeautyProduct::CLI
   end # sub_menu_options_text
 
   ## DELETE ONCE YOU REPLACE WITH UNIVERSAL SUB-MENU
-  ##FIRST: NEED TO FIGURE OUT HOW TO CORRECTLY PASS METHOD AS PARAMETER
+  ## FIRST: NEED TO FIGURE OUT HOW TO CORRECTLY PASS METHOD AS PARAMETER
   def product_menu
     sub_menu_options_text
     user_input = gets.downcase.strip
 
     case user_input
     when "1", "search again"
-      match_product
+      yield
     when "2", "main menu"
       main_menu
     when "exit"
