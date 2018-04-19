@@ -14,9 +14,6 @@ class BeautyProduct::Brand
   end # all
 
 end # class Brand
-def product_list(product_list)
-  self.products = product_list.split(", ")
-end # product
 
 
 ########################################
@@ -37,6 +34,10 @@ def self.product
  def products
    @products
  end # products
+
+ def product_list(product_list)
+   self.products = product_list.split(", ")
+ end # product
 
  def product_list(product_list)
    self.products = product_list.split(", ")

@@ -1,5 +1,4 @@
 class BeautyProduct::CLI
-  # BeautyProduct::CLI.call
 
   def call
     puts "One moment, please."
@@ -195,7 +194,7 @@ class BeautyProduct::CLI
   ## Might Need to Delete
 
   ## DELETE ONCE YOU REPLACE WITH UNIVERSAL SUB-MENU
-  ##FIRST: NEED TO FIGURE OUT HOW TO CORRECTLY PASS METHOD AS PARAMETER
+  ## FIRST: NEED TO FIGURE OUT HOW TO CORRECTLY PASS METHOD AS PARAMETER
   def no_ingredient_menu
     sub_menu_options_text
     user_input = gets.downcase.strip

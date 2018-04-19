@@ -8,6 +8,8 @@ class BeautyProduct::Scraper
     BeautyProduct::Product.add_ingredients
   end # initialize
 
+  ## Scrapes the Sales Page
+  ## Stores the product url
   def scrape_sale_page
     cult_beauty_url = "https://www.cultbeauty.co.uk"
     sale_page = Nokogiri::HTML(open("#{cult_beauty_url}/sale.html"))
@@ -30,7 +32,7 @@ class BeautyProduct::Scraper
       product.brand = product_page.css("h1 a div.productBrandTitle").text ## Would be better if I associated with product.brand.name,
                                                                           ## but I am leaving it as is for sake of simplicity
 
-      ## SETS the PRICE
+      ## GETS PRICE & CONVERTS IT FROM POUNDS to USD ##
       regular_price = product_page.css("span.productPrice.js-product-price").text
       sale_price = product_page.css("span.productSpecialPrice.js-product-special-price").text
 
@@ -40,7 +42,8 @@ class BeautyProduct::Scraper
         product.price = (sale_price.to_f * 1.43).round(2).to_s
       end # if price
 
-      ## SET PRODUCT DESCRIPTION, DIRECTIONS, & INGREDIENTS
+
+      ## SET PRODUCT DESCRIPTION, DIRECTIONS, & INGREDIENTS ##
       product_info = product_page.css(".productInfo.js-product-info ul li")
       product_info.each do |info|
         if info.css("div.itemHeader span").text == "Description"
@@ -49,7 +52,7 @@ class BeautyProduct::Scraper
           product.directions = info.css("div.itemContent").collect {|p| p.text}.join(" ")
         elsif info.css("div.itemHeader span").text == "Full ingredients list"
           product.ingredients_string = info.css("div.itemContent").collect {|p| p.text}.join(" ")
-        end # if == 'Description', 'How to use', 'Full Ingredients list'
+        end # if css().text == 'Description', 'How to use', 'Full Ingredients list'
       end # do |info|
     end # do |product|
   end # scrape_product_page
