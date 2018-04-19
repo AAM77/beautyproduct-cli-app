@@ -24,7 +24,7 @@ class BeautyProduct::TestScraper
       BeautyProduct::TestProduct.fetch_product_details(product)
     end # do |product|
   end # create_products
-  
+
 
 
       product_name = product.css("h3.productGridTitle").text
@@ -46,7 +46,7 @@ class BeautyProduct::TestScraper
       ## GETS PRICE & CONVERTS IT FROM POUNDS to USD ##
       regular_price = product_page.css("span.productPrice.js-product-price").text
       sale_price = product_page.css("span.productSpecialPrice.js-product-special-price").text
-
+      ## def convert_price
       if sale_price.nil?
         product.price = (regular_price.to_f * 1.43).round(2).to_s
       else
