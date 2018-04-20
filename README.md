@@ -7,7 +7,7 @@ Even though this particular program searches the sales page of cultbeauty.co.uk 
 
 In its current state, the scraper’s CLI allows the user to:
 
-(1) Print a numbered list of sale products by alphabetical order
+(1) Print a numbered list of sale products by alphabetical order and allows the user to choose a list for more info
 (2) Print a numbered list of sale products by alphabetical order
 (3) Search by product name (searching by a keyword or substring works)
 (4) Search for products that contain a user-specified ingredient (searching with a keyword or substring works)
@@ -15,7 +15,7 @@ In its current state, the scraper’s CLI allows the user to:
 
 (Typing ‘exit’ terminates the program).
 
-Choosing (1) and (2) returns to the main menu after executing. Choosing (3), (4), or (5) gives the user the option to run the same search again.
+Choosing (1) and (2) returns to the main menu after executing. Choosing (3), (4), and (5) displays a list of the products that match the search query. The program then asks the user to enter the number of the item the user is interested in to display its full info It then gives the user the option to (1) run the same search again, (2) return to the main menu, and to exit the program by typing ‘exit.’
 
 ## Installation
 
@@ -24,7 +24,6 @@ Add this line to your application's Gemfile:
 ```ruby
 gem 'beauty_product'
 ```
-
 And then execute:
 
     $ bundle
@@ -34,8 +33,31 @@ Or install it yourself as:
     $ gem install beauty_product
 
 ## Usage
+Run the program by navigating to the ./beauty_product folder on your machine. If done using the GUI, double click on the beauty_product icon to run it. If done using the terminal, type ./bin/beauty_product in the terminal and hit enter. If you wish to experiment with the code, you can run the program with 'pry' by typing ./bin/console and then 'BeautyProduct::CLI.new.call' in the terminal.
 
-TODO: Write usage instructions here
+Upon execution, the program clears all previous information and then collects and stores all the current information posted on 'https://cultbeauty.co.uk/sale.html?'. This process will take less than a minute upon program initiation (approximately 32 seconds, give or take some). You will know the program is ready once you receive the welcome message and the menu options appear. You may receive an error if your internet connection times out. In this case, just run the program above, following the directions above.
+
+In its current state, the scraper’s CLI displays the following menu upon execution:
+
+(1) Print a numbered list of sale products by alphabetical order and allows the user to choose a list for more info
+(2) Print a numbered list of sale products by alphabetical order
+(3) Search by product name (searching by a keyword or substring works)
+(4) Search for products that contain a user-specified ingredient (searching with a keyword or substring works)
+(5) Search for products that do not contain a user-specified ingredient (searching with a keyword or substring works)
+
+(Typing ‘exit’ terminates the program).
+
+Choosing '1' prints an alphabetized list of products with their brand and sale price. The user will be prompted to enter a number to see more information about the product.
+
+Choosing '2' prints an alphabetized list of all of the ingredients present in the products on Cult Beauty's sales page and then returns to the main menu without prompting the user. This method serves only as an optional reference for the user to utilize in conjunction with main menu options (4) and (5).
+
+Choosing '3' allows the user to enter a keyword to search for a product by the product's name. The program conducts a case-insensitive search through the product names and print out a list of products that have the keyword in any part of their names. For example, typing 'L' will print all products that have an 'L' (uppercase or lower) in their names. After printing the list, the program prompts the user to enter a number corresponding the product's list number. This will print out more information for that product.
+
+Choosing '4' allows the user to search for products that have a specific ingredient in their ingredients list. The user can enter a keyword and the program will conduct a case-insensitive search through the products' ingredient lists and print out a list of products that have the queried keyword in any part of the ingredient names in their ingredients list. For example, typing 'L' will print all products that have an ingredient with 'L' (uppercase or lower) in its name. After printing the list, the program prompts the user to enter a number corresponding the product's list number. This will print out more information for that product.
+
+Choosing '5' allows the user to search for products that DO NOT have the user-specified product in their ingredients list. The user can enter a keyword and the program will conduct a case-insensitive search through the products' ingredient lists and print out a list of products that DO NOT have the queried keyword in any part of the ingredient names in their ingredients list. For example, typing 'L' will EXCLUDE all products that have an ingredient with 'L' (uppercase or lower) in its name. After printing the list, the program prompts the user to enter a number corresponding the product's list number. This will print out more information for that product.
+
+After displaying the product info, the program prompts the user to enter the number of the item the user is interested in to display its full info It then gives the user the option to (1) run the same search again, (2) return to the main menu, and (3) to exit the program by typing ‘exit.’
 
 ## Development
 

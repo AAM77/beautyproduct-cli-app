@@ -23,7 +23,7 @@ class BeautyProduct::CLI
   ## OPTIONS FOR THE MAIN MENU ##
   ###############################
   def main_menu_options
-    puts "\nPlease select an option from the menu:"
+    puts "\nPlease select an option from the menu (Type 1 to 5):"
 
     puts "1. List Products"
     puts "2. List Ingredients"
@@ -59,6 +59,7 @@ class BeautyProduct::CLI
       exit
     else
       puts "\nINVALID ENTRY!"
+      puts "Type 1, 2, 3, 4, or 5 and press the 'Enter'/'Return' key."
       main_menu
     end # case user_input
   end # main_menu
