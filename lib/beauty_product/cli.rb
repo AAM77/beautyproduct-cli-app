@@ -139,7 +139,7 @@ class BeautyProduct::CLI
       puts "= #{products.size} Products Found ="
       puts "==================================="
       products.each.with_index(1) do |product, index|
-        puts "\n#{index}. #{product.name} - (BRAND: #{product.brand}) - $#{product.price}"
+        puts "\n#{index}. #{product.name} - (BRAND: #{product.brand}) - $#{product.sale_price}"
       end # do |product|
       full_product_info(products)
     end # if user_input in products
@@ -159,17 +159,17 @@ class BeautyProduct::CLI
     product_index = (user_selection - 1)
     product = products[product_index]
 
-    puts "\nProduct Name: #{product.name}"
-    puts "Product Brand: #{product.brand}"
-    puts "Product Price: $#{product.price}"
+    puts "\nNAME:          #{product.name}"
+    puts "BRAND:         #{product.brand}"
+    puts "SALE Price:    $#{product.sale_price}"
 
-    puts "\nProduct Description:"
+    puts "\nDESCRIPTION:"
     puts "#{product.description}"
 
-    puts "\nHow to Use:"
+    puts "\nHOW TO USE:"
     puts "#{product.directions}"
 
-    puts "\nIngredients include:"
+    puts "\nINGREDIENTS INCLUDE:"
     product.ingredients_string.nil? ? (puts "No Ingredients listed for this product.") : (puts "#{product.ingredients_string}")
   end # print_product_info
 
@@ -204,15 +204,6 @@ class BeautyProduct::CLI
     end # case user_input
   end # display_sub_menu
 end # class CLI
-
-def inner_method(method_name)
-   calling_method = method_name
-   previous_call_method = calling_method
-   puts "Inner Method, here"
-   puts "This is the parameter: #{method_name}"
-   puts "This is the calling_method: #{calling_method}"
-   puts "This is the previous_call_method: #{previous_call_method}"
-end
 ###################
 ## END OF CLASS  ##
 ###################
