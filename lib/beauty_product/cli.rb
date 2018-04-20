@@ -67,10 +67,10 @@ class BeautyProduct::CLI
   ##   Provides a list of products on the sales page   ##
   #######################################################
   def list_products
-    product_names = BeautyProduct::Product.all.collect { |product| [product.name, product.brand] } ## might need to remove array and product.brand
-    puts "\n#{product_names.size} products found"
-    puts "The following items are on sale:"
-    product_names.sort.each.with_index(1) { |product, index| puts "#{index}. #{product[0]}" }
+    products = BeautyProduct::Product.all.sort_by{ |product| product.name }
+    @current_method = :list_products
+    display_search_results(products)
+    display_sub_menu
   end # list_products
 
   #######################################################################
@@ -159,9 +159,9 @@ class BeautyProduct::CLI
     product_index = (user_selection - 1)
     product = products[product_index]
 
-    puts "\nNAME:          #{product.name}"
-    puts "BRAND:         #{product.brand}"
-    puts "SALE Price:    $#{product.sale_price}"
+    puts "\nPRODUCT NAME:     #{product.name}"
+    puts "PRODUCT BRAND:    #{product.brand}"
+    puts "SALE PRICE:       $#{product.sale_price}"
 
     puts "\nDESCRIPTION:"
     puts "#{product.description}"

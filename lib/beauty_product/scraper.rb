@@ -7,8 +7,9 @@ class BeautyProduct::Scraper
     BeautyProduct::Product.add_ingredients
   end # initialize
 
-  ## Scrapes the Sales Page
-  ## Stores the product url
+  ##################################################################
+  ##  SCRAPES THE SALES PAGE FOR: Product Name, Product Page url  ##
+  ##################################################################
   def scrape_sale_page
     cult_beauty_url = "https://www.cultbeauty.co.uk"
     sale_page = Nokogiri::HTML(open("#{cult_beauty_url}/sale.html"))
@@ -38,13 +39,13 @@ class BeautyProduct::Scraper
       product_info.each do |info|
         #DESCRIPTION
         if info.css("div.itemHeader span").text == "Description"
-          product.description = info.css("div.itemContent").collect {|p| p.text}.join(" ").strip
+          product.description = info.css("div.itemContent").collect {|p| p.text.strip}.join(" ")
         #DIRECTIONS
         elsif info.css("div.itemHeader span").text == "How to use"
-          product.directions  = info.css("div.itemContent").collect {|p| p.text}.join(" ").strip
+          product.directions  = info.css("div.itemContent").collect {|p| p.text.strip}.join(" ")
         #INGREDIENTS
         elsif info.css("div.itemHeader span").text == "Full ingredients list"
-          product.ingredients_string = info.css("div.itemContent").collect {|p| p.text}.join(" ").strip
+          product.ingredients_string = info.css("div.itemContent").collect {|p| p.text.strip}.join(" ")
         end # if css().text == 'Description', 'How to use', 'Full Ingredients list'
       end # do |info|
     end # do |product|
