@@ -9,7 +9,6 @@ class BeautyProduct::CLI
 
     BeautyProduct::Product.all.clear
     BeautyProduct::Ingredient.all.clear
-    BeautyProduct::Brand.all.clear
 
     BeautyProduct::Scraper.new
 
