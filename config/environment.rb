@@ -1,6 +1,5 @@
 require "nokogiri"
 require "open-uri"
-require "./lib/beauty_product/brand"
 require "./lib/beauty_product/cli"
 require "./lib/beauty_product/ingredient"
 require "./lib/beauty_product/product"
