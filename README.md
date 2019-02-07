@@ -1,5 +1,7 @@
 # BeautyProduct
 
+## [ NOTE ]: I will return to this app to clean up the code and add more features as soon as I finish the Flatiron School curriculum. I will probably expand on the idea and create a new version for it using the new skills I acquire: HTML, CSS, Ruby on Rails, JS, React, & Redux.
+
 ## Description
 
 I came up with the idea for this app based on a desire to search for a product, not just by its name, but also by its ingredients.
