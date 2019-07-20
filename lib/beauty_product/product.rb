@@ -21,7 +21,7 @@ class BeautyProduct::Product
     end # do |product|
   end # ingredient
 
-  ## Creates an ingredient object for each one and adds this product to its products list
+  # Creates an ingredient object for each one and adds this product to its products list
   def self.add_ingredients
     self.all.each do |product|
       if !product.ingredients_array.nil?
@@ -37,6 +37,13 @@ class BeautyProduct::Product
       end # if !nil?
     end # each product
   end # add_ingredient
+
+
+  def add_ingredients
+    if self.ingredients_array.nil?
+      
+    end
+  end
 end # class Product
 ####################
 ##  END OF CLASS  ##
