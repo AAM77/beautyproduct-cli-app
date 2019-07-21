@@ -4,7 +4,7 @@ class BeautyProduct::Scraper
     scrape_sale_page
     scrape_product_page
     BeautyProduct::Product.create_ingredients_array ## Not sure if I need this...
-    BeautyProduct::Product.add_ingredients
+    #BeautyProduct::Product.add_ingredients
   end # initialize
 
   ##################################################################
@@ -47,6 +47,8 @@ class BeautyProduct::Scraper
         elsif info.css("div.itemHeader span").text == "Full ingredients list"
           product.ingredients_string = info.css("div.itemContent").collect {|p| p.text.strip}.join(" ")
         end # if css().text == 'Description', 'How to use', 'Full Ingredients list'
+
+        product.add_ingredients
       end # do |info|
     end # do |product|
   end # scrape_product_page
