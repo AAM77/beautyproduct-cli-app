@@ -26,8 +26,8 @@ class BeautyProduct::Scraper
   #############################################################################
   ## SCRAPES INFORMATION NECESSARY TO GENERATE A DESCRIPTION FOR THE PRODUCT ##
   #############################################################################
-  def create_description(product, info)
-    product.description = info.css("div.itemContent").collect {|p| p.text.strip}.join(" ")
+  def create_info(info)
+    info.css("div.itemContent").collect {|p| p.text.strip}.join(" ")
   end
 
   #########################################################################################
@@ -47,15 +47,15 @@ class BeautyProduct::Scraper
       product_info.each do |info|
         #DESCRIPTION
         if info.css("div.itemHeader span").text == "Description"
-          create_description(product, info)
+          product.description = create_info(info)
 
         #DIRECTIONS
         elsif info.css("div.itemHeader span").text == "How to use"
-          product.directions  = info.css("div.itemContent").collect {|p| p.text.strip}.join(" ")
+          product.directions  = create_info(info)
 
         #INGREDIENTS
         elsif info.css("div.itemHeader span").text == "Full ingredients list"
-          product.ingredients_string = info.css("div.itemContent").collect {|p| p.text.strip}.join(" ")
+          product.ingredients_string = create_info(info)
         end # if css().text == 'Description', 'How to use', 'Full Ingredients list'
 
         product.add_ingredients
