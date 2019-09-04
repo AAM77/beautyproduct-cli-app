@@ -23,9 +23,17 @@ class BeautyProduct::Scraper
     end # |product|
   end # scrape_sale_page
 
+  #############################################################################
+  ## SCRAPES INFORMATION NECESSARY TO GENERATE A DESCRIPTION FOR THE PRODUCT ##
+  #############################################################################
+  def create_description(product, info)
+    product.description = info.css("div.itemContent").collect {|p| p.text.strip}.join(" ")
+  end
+
   #########################################################################################
   ## SCRAPES EACH PRODUCT PAGE FOR: Brand, Price, Description, Directions, & Ingredients ##
   #########################################################################################
+
   def scrape_product_page
     BeautyProduct::Product.all.each do |product|
       product_page = Nokogiri::HTML(open(product.url))
@@ -39,10 +47,12 @@ class BeautyProduct::Scraper
       product_info.each do |info|
         #DESCRIPTION
         if info.css("div.itemHeader span").text == "Description"
-          product.description = info.css("div.itemContent").collect {|p| p.text.strip}.join(" ")
+          create_description(product, info)
+
         #DIRECTIONS
         elsif info.css("div.itemHeader span").text == "How to use"
           product.directions  = info.css("div.itemContent").collect {|p| p.text.strip}.join(" ")
+
         #INGREDIENTS
         elsif info.css("div.itemHeader span").text == "Full ingredients list"
           product.ingredients_string = info.css("div.itemContent").collect {|p| p.text.strip}.join(" ")
