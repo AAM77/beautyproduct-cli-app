@@ -1,6 +1,6 @@
 # BeautyProduct
 
-## [ NOTE ]: I will return to this app to clean up the code and add more features as soon as I finish the Flatiron School curriculum. I will probably expand on the idea and create a new version for it using the new skills I acquire: HTML, CSS, Ruby on Rails, JS, React, & Redux.
+## [ NOTE ]: September 03, 2019: Returned to App. Cleaning up, refactoring, and expanding.
 
 ## Description
 
